@@ -1,6 +1,8 @@
 package control;
 
 import entity.Agenzia;
+import entity.ClienteRegistrato;
+import entity.Prenotazione;
 import entity.Scooter;
 
 public class GestioneSistemaPrenotazione {
@@ -13,27 +15,38 @@ public class GestioneSistemaPrenotazione {
     }
 
     public int registraScooter(String targa, String cilindrata, String prezzoPerGiornoNoleggioAltaStagione, String prezzoPerGiornoNoleggioBassaStagione, String tipologia, Agenzia agenzia){
+
         if (!isTargaValida(targa)) {
             System.out.println("Targa non valida. Inserire una targa conforme al formato europeo (es. AA123BB)");
             return 1;
         }
-
-        Scooter scooter = new Scooter(targa, cilindrata, prezzoPerGiornoNoleggioAltaStagione, prezzoPerGiornoNoleggioBassaStagione, tipologia, agenzia);
 
         Scooter scooter=new Scooter(targa, cilindrata, prezzoPerGiornoNoleggioAltaStagione, prezzoPerGiornoNoleggioBassaStagione, tipologia, agenzia);
 
         //registrazione su DB dello scooter attraverso il DAO e return 0 se non si sono verificati errori, 1 altrimenti
     }
 
-    public int modificaStatoScooter(String targa, String stato){
+    public int modificaStatoScooter(String targaScooter, String stato){
         if(stato!="in-servizio" || stato!="dismesso") return 1;
         else{
             //modifica stato dello scooter sul database
         }
+
     }
 
     public int registrazioneCliente(String nome, String cognome, String dataDiNascita, String email, String password){
 
+        ClienteRegistrato clienteRegistrato=new ClienteRegistrato(nome,cognome,dataDiNascita,email,password);
+
+        //registrazione su DB del cliente
+    }
+
+    public int prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email){
+        //readaccessorio
+
+        //read idClienteRegistrato
+
+        Prenotazione eP=new Prenotazione(,)
     }
 
     private static boolean isTargaValida(String targa) {
