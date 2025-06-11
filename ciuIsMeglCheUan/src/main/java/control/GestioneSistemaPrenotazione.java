@@ -46,7 +46,7 @@ public class GestioneSistemaPrenotazione {
 
         //read idClienteRegistrato
 
-        Prenotazione eP=new Prenotazione(,)
+        Prenotazione eP=new Prenotazione()
     }
 
     private static boolean isTargaValida(String targa) {
