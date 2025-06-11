@@ -1,9 +1,9 @@
 package control;
 
-import entity.Agenzia;
-import entity.ClienteRegistrato;
-import entity.Prenotazione;
-import entity.Scooter;
+import database.AccessorioDAO;
+import database.ClienteRegistratoDAO;
+import database.ScooterDAO;
+import entity.*;
 
 public class GestioneSistemaPrenotazione {
     private static GestioneSistemaPrenotazione gsp = null;
@@ -42,11 +42,16 @@ public class GestioneSistemaPrenotazione {
     }
 
     public int prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email){
-        //readaccessorio
+        Accessorio ac=AccessorioDAO.readAccessorio();
 
-        //read idClienteRegistrato
+        ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email).getId();
 
-        Prenotazione eP=new Prenotazione()
+        //is this necessary? If so, we need to change sd PrenotazioneScooter
+        Scooter s= ScooterDAO.readScooter(targaScooter);
+
+        Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
+
+
     }
 
     private static boolean isTargaValida(String targa) {

@@ -8,7 +8,7 @@ public class ScooterDAO {
         return 0;
     }
 
-    public static Scooter readScooter(){
+    public static Scooter readScooter(String targa){
         return null;
     }
 

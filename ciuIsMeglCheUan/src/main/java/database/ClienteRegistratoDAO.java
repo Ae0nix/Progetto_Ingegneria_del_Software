@@ -8,7 +8,7 @@ public class ClienteRegistratoDAO {
         return 0;
     }
 
-    public static ClienteRegistrato readClienteRegistrato() {
+    public static ClienteRegistrato readClienteRegistrato(String email) {
         return null;
     }
 

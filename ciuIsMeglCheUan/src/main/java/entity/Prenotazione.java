@@ -11,8 +11,8 @@ public class Prenotazione {
     private String scooterTarga;
 
 
-    public Prenotazione(String id, String dataRitiro, String dataConsegna, ClienteRegistrato clienteRegistrato, Scooter scooter) {
-        this.id = id;
+    public Prenotazione(String dataRitiro, String dataConsegna, ClienteRegistrato clienteRegistrato, Scooter scooter) {
+        this.id = null;
         this.dataRitiro = dataRitiro;
         this.dataConsegna = dataConsegna;
         this.clienteRegistrato = clienteRegistrato;
