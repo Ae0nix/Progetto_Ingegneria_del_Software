@@ -12,4 +12,20 @@ public class Accessorio {
         this.prezzo = prezzo;
         this.tipo = tipo;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public float getPrezzo() {
+        return prezzo;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
 }
