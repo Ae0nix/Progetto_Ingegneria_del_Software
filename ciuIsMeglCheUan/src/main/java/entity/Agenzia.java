@@ -10,7 +10,7 @@ public class Agenzia {
     private String usernameTitolare;
 
     public Agenzia(int id, String localita, String indirizzo, String email, String numeroDiTelefono, String usernameTitolare, String passwordTitolare) {
-        this.id = id;
+        this.id = -1;
         this.localita = localita;
         this.indirizzo = indirizzo;
         this.email = email;

@@ -4,13 +4,13 @@ import entity.Accessorio;
 import exception.DAOException;
 import exception.DBConnectionException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AccessorioDAO {
 
-    public static int createAccessorio(Accessorio accessorio) {
+    public static int createAccessorio(Accessorio accessorio) throws DAOException, DBConnectionException  {
 
         try {
             Connection conn = DBManager.getConnection();
@@ -39,13 +39,42 @@ public class AccessorioDAO {
         return 0;
     }
 
-    public static Accessorio readAccessorio(){
-        return null;
+    public static List<Accessorio> readAccessorio() throws DAOException, DBConnectionException {
+        List<Accessorio> accessori = new ArrayList<>();
+
+        try {
+            Connection conn = DBManager.getConnection();
+
+            String query = "SELECT * FROM Accessori;";
+
+            try {
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+
+                while (rs.next()) {
+                    int id = rs.getInt("id");
+                    String descrizione = rs.getString("descrizione");
+                    float prezzo = rs.getFloat("prezzo");
+                    String tipo = rs.getString("tipo");
+
+                    Accessorio acc = new Accessorio(descrizione, prezzo, tipo);
+                    acc.setId(id);
+                    accessori.add(acc);
+                }
+            } catch (SQLException e) {
+                throw new DAOException("Errore lettura Accessorio");
+            } finally {
+            DBManager.closeConnection();
+            }
+        }catch(SQLException e){
+            throw new DBConnectionException("Errore connessione al database");
+        }
+        return accessori;
     }
 
 
 
-    public static int updateAccessorio(int idDaModificare, Accessorio accessorio) {
+    public static int updateAccessorio(int idDaModificare, Accessorio accessorio) throws DAOException, DBConnectionException {
         try {
             Connection conn = DBManager.getConnection();
 
@@ -77,7 +106,7 @@ public class AccessorioDAO {
 
 
 
-    public static int deleteAccessorio(int idAccessorio) {
+    public static int deleteAccessorio(int idAccessorio) throws DAOException, DBConnectionException {
         try{
             Connection conn = DBManager.getConnection();
 

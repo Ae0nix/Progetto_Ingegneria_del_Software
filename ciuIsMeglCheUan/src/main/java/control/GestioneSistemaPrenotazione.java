@@ -4,6 +4,12 @@ import database.AccessorioDAO;
 import database.ClienteRegistratoDAO;
 import database.ScooterDAO;
 import entity.*;
+import exception.DAOException;
+import exception.DBConnectionException;
+import exception.OperationException;
+import util.OpzioniPrenotazioneResult;
+
+import java.util.List;
 
 public class GestioneSistemaPrenotazione {
     private static GestioneSistemaPrenotazione gsp = null;
@@ -14,14 +20,14 @@ public class GestioneSistemaPrenotazione {
         return gsp;
     }
 
-    public int registraScooter(String targa, String cilindrata, String prezzoPerGiornoNoleggioAltaStagione, String prezzoPerGiornoNoleggioBassaStagione, String tipologia, Agenzia agenzia){
+    /*
+    public int registraScooter(String targa, int cilindrata, float prezzoPerGiornoNoleggioAltaStagione, float prezzoPerGiornoNoleggioBassaStagione, String tipologia, Agenzia agenzia){
 
         if (!isTargaValida(targa)) {
             System.out.println("Targa non valida. Inserire una targa conforme al formato europeo (es. AA123BB)");
             return 1;
         }
 
-        Scooter scooter=new Scooter(targa, cilindrata, prezzoPerGiornoNoleggioAltaStagione, prezzoPerGiornoNoleggioBassaStagione, tipologia, agenzia);
 
         //registrazione su DB dello scooter attraverso il DAO e return 0 se non si sono verificati errori, 1 altrimenti
     }
@@ -39,10 +45,35 @@ public class GestioneSistemaPrenotazione {
         ClienteRegistrato clienteRegistrato=new ClienteRegistrato(nome,cognome,dataDiNascita,email,password);
 
         //registrazione su DB del cliente
-    }
+    }*/
 
+    public OpzioniPrenotazioneResult visualizzaOpzioniDIPrenotazioneCosti(String targaScooter) throws OperationException {
+
+        try {
+            Scooter s=ScooterDAO.readScooter(targaScooter);
+
+            if(s==null) {
+                throw new OperationException("Proiezione non trovata");
+            }
+
+            float pbs=s.getPrezzoPerGiornoNoleggioBassaStagione();
+
+            List<Accessorio> acc= null;
+            acc = AccessorioDAO.readAccessorio();
+
+            if (acc.isEmpty()) {
+                throw new OperationException("Nessun accessorio trovato");
+            }
+
+            return new OpzioniPrenotazioneResult(acc,pbs);
+
+        } catch (DAOException | DBConnectionException e) {
+            throw new OperationException(e.getMessage());
+        }
+    }
+/*
     public int prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email){
-        Accessorio ac=AccessorioDAO.readAccessorio();
+        //Accessorio ac=AccessorioDAO.readAccessorio();
 
         ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email).getId();
 
@@ -53,7 +84,7 @@ public class GestioneSistemaPrenotazione {
 
 
     }
-
+*/
     private static boolean isTargaValida(String targa) {
         if (targa == null) return false;
 

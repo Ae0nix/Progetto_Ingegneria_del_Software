@@ -1,6 +1,6 @@
 package exception;
 
-public class DBConnectionException extends RuntimeException {
+public class DBConnectionException extends Exception {
 
     public DBConnectionException() {}
 

@@ -1,7 +1,7 @@
 package entity;
 
 public class Prenotazione {
-    private String id;
+    private int id;
     private String dataRitiro;
     private String dataConsegna;
     private float costoTotale;
@@ -12,7 +12,7 @@ public class Prenotazione {
 
 
     public Prenotazione(String dataRitiro, String dataConsegna, ClienteRegistrato clienteRegistrato, Scooter scooter) {
-        this.id = null;
+        this.id = -1;
         this.dataRitiro = dataRitiro;
         this.dataConsegna = dataConsegna;
         this.clienteRegistrato = clienteRegistrato;
