@@ -1,23 +1,20 @@
 package util;
 
 import entity.Accessorio;
+import entity.Prenotazione;
+import entity.Scooter;
+
 import java.util.List;
 
 public class OpzioniPrenotazioneResult {
     private List<Accessorio> accessori;
     private float prezzoBassaStagione;
+    private Prenotazione prenotazione;
 
-    public OpzioniPrenotazioneResult(List<Accessorio> accessori, float prezzoBassaStagione) {
+    public OpzioniPrenotazioneResult(List<Accessorio> accessori, float prezzoBassaStagione, Prenotazione prenotazione) {
         this.accessori = accessori;
         this.prezzoBassaStagione = prezzoBassaStagione;
-    }
-
-    public List<Accessorio> getAccessori() {
-        return accessori;
-    }
-
-    public float getPrezzoBassaStagione() {
-        return prezzoBassaStagione;
+        this.prenotazione = prenotazione;
     }
 }
 

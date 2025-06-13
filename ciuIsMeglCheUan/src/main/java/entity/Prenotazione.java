@@ -1,5 +1,10 @@
 package entity;
 
+import exception.OperationException;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Prenotazione {
     private int id;
     private String dataRitiro;
@@ -9,7 +14,7 @@ public class Prenotazione {
     private int clienteRegistratoId;
     private Scooter scooter;
     private String scooterTarga;
-
+    private List<Accessorio> accessori;
 
     public Prenotazione(String dataRitiro, String dataConsegna, ClienteRegistrato clienteRegistrato, Scooter scooter) {
         this.id = -1;
@@ -26,4 +31,26 @@ public class Prenotazione {
         this.costoTotale = costoTotale;
     }
 
+    public void setAccessori(List<Accessorio> accessori) throws OperationException {
+        if (accessori == null) {
+            throw new OperationException("La lista di accessori non può essere null");
+        }
+        this.accessori = accessori;
+    }
+
+    public List<Accessorio> getAccessori() {
+        return accessori;
+    }
+
+    public Scooter getScooter() {
+        return scooter;
+    }
+
+    public String getDataRitiro() {
+        return dataRitiro;
+    }
+
+    public String getDataConsegna() {
+        return dataConsegna;
+    }
 }

@@ -9,6 +9,10 @@ import exception.DBConnectionException;
 import exception.OperationException;
 import util.OpzioniPrenotazioneResult;
 
+import java.time.LocalDate;
+import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 public class GestioneSistemaPrenotazione {
@@ -47,13 +51,13 @@ public class GestioneSistemaPrenotazione {
         //registrazione su DB del cliente
     }*/
 
-    public OpzioniPrenotazioneResult visualizzaOpzioniDIPrenotazioneCosti(String targaScooter) throws OperationException {
+    public OpzioniPrenotazioneResult visualizzaOpzioniDiPrenotazioneCosti(String targaScooter, String dataRitiro, String dataConsegna, String email) throws OperationException {
 
         try {
             Scooter s=ScooterDAO.readScooter(targaScooter);
 
             if(s==null) {
-                throw new OperationException("Proiezione non trovata");
+                throw new OperationException("Scooter non trovato");
             }
 
             float pbs=s.getPrezzoPerGiornoNoleggioBassaStagione();
@@ -65,11 +69,22 @@ public class GestioneSistemaPrenotazione {
                 throw new OperationException("Nessun accessorio trovato");
             }
 
-            return new OpzioniPrenotazioneResult(acc,pbs);
+            ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
+
+            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
+
+            return new OpzioniPrenotazioneResult(acc,pbs,eP);
 
         } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
         }
+    }
+
+    public Prenotazione selezioneAccessori(List<Accessorio> acc, Prenotazione prenotazione) throws OperationException {
+        prenotazione.setAccessori(acc);
+        float costo=calcoloCostoPrenotazione(prenotazione);
+        prenotazione.setCostoTotale(costo);
+        return prenotazione;
     }
 /*
     public int prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email){
@@ -85,6 +100,45 @@ public class GestioneSistemaPrenotazione {
 
     }
 */
+    private float calcoloCostoPrenotazione(Prenotazione prenotazione) {
+        float costo=0;
+        List<Accessorio> acc=prenotazione.getAccessori();
+        for(Accessorio a:acc){
+            costo+=a.getPrezzo();
+        }
+
+        // Recupera scooter e date
+        Scooter scooter = prenotazione.getScooter();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate ritiro = LocalDate.parse(prenotazione.getDataRitiro(), formatter);
+        LocalDate consegna = LocalDate.parse(prenotazione.getDataConsegna(), formatter);
+
+        // Calcola numero di giorni di noleggio (inclusivo)
+        long giorniNoleggio = ChronoUnit.DAYS.between(ritiro, consegna) + 1;
+
+        // Calcola costo noleggio giorno per giorno, considerando alta o bassa stagione
+        for (int i = 0; i < giorniNoleggio; i++) {
+            LocalDate giorno = ritiro.plusDays(i);
+            if (isAltaStagione(giorno)) {
+                costo += scooter.getPrezzoPerGiornoNoleggioAltaStagione();
+            } else {
+                costo += scooter.getPrezzoPerGiornoNoleggioBassaStagione();
+            }
+        }
+
+        return costo;
+    }
+
+    private boolean isAltaStagione(LocalDate data) {
+        // esempio: alta stagione da 1 giugno a 31 agosto
+        MonthDay inizioAlta = MonthDay.of(6, 1);
+        MonthDay fineAlta = MonthDay.of(8, 31);
+        MonthDay giorno = MonthDay.from(data);
+
+        return !giorno.isBefore(inizioAlta) && !giorno.isAfter(fineAlta);
+    }
+
     private static boolean isTargaValida(String targa) {
         if (targa == null) return false;
 

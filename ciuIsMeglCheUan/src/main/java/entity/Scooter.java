@@ -38,4 +38,8 @@ public class Scooter {
     public float getPrezzoPerGiornoNoleggioBassaStagione() {
         return prezzoPerGiornoNoleggioBassaStagione;
     }
+
+    public float getPrezzoPerGiornoNoleggioAltaStagione() {
+        return prezzoPerGiornoNoleggioAltaStagione;
+    }
 }

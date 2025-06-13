@@ -50,7 +50,7 @@ public class AccessorioDAO {
             try {
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
-
+                
                 while (rs.next()) {
                     int id = rs.getInt("id");
                     String descrizione = rs.getString("descrizione");
