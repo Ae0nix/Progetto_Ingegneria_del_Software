@@ -8,7 +8,7 @@ public class SistemaPrenotazioneFacade {
     private GestioneSistemaPrenotazione controller = GestioneSistemaPrenotazione.getInstance();
 
     public Prenotazione prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email) throws OperationException {
-        controller.visualizzaOpzioniDiPrenotazioneCosti(targaScooter);
+//        controller.visualizzaOpzioniDiPrenotazioneCosti(targaScooter);
 
 
 
