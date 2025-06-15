@@ -1,8 +1,6 @@
 package control;
 
-import database.AccessorioDAO;
-import database.ClienteRegistratoDAO;
-import database.ScooterDAO;
+import database.*;
 import entity.*;
 import exception.DAOException;
 import exception.DBConnectionException;
@@ -86,20 +84,24 @@ public class GestioneSistemaPrenotazione {
         prenotazione.setCostoTotale(costo);
         return prenotazione;
     }
-/*
-    public int prenotazioneScooter(String targaScooter, String dataRitiro, String dataConsegna, String email){
-        //Accessorio ac=AccessorioDAO.readAccessorio();
 
-        ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email).getId();
+    public Prenotazione savePrenotazione(Prenotazione prenotazione) throws OperationException {
+        try {
+            PrenotazioneDAO.createPrenotazione(prenotazione);
 
-        //is this necessary? If so, we need to change sd PrenotazioneScooter
-        Scooter s= ScooterDAO.readScooter(targaScooter);
+            int idPrenotazione=prenotazione.getId();
+            List<Accessorio> acc=prenotazione.getAccessori();
 
-        Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
+            for (Accessorio a:acc){
+                PrenotazioneAccessorioDAO.createPrenotazioneAccessorio(idPrenotazione,a.getId());
+            }
 
-
+            return prenotazione;
+        } catch (DAOException | DBConnectionException e) {
+            throw new OperationException(e.getMessage());
+        }
     }
-*/
+
     private float calcoloCostoPrenotazione(Prenotazione prenotazione) {
         float costo=0;
         List<Accessorio> acc=prenotazione.getAccessori();
