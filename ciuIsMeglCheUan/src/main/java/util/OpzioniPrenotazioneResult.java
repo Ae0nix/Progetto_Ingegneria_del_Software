@@ -2,7 +2,6 @@ package util;
 
 import entity.Accessorio;
 import entity.Prenotazione;
-import entity.Scooter;
 
 import java.util.List;
 

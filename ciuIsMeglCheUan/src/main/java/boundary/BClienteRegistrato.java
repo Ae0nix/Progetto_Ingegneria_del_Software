@@ -24,24 +24,7 @@ public class BClienteRegistrato {
             @RequestParam String email,
             @RequestParam List<Integer> accessoriIds
     ) {
-        try {
-            OpzioniPrenotazioneResult opzioni = sistema.visualizzaOpzioniDiPrenotazioneCosti(
-                    targa, dataRitiro, dataConsegna, email
-            );
-
-            List<Accessorio> tuttiAccessori = opzioni.getAccessori();
-            List<Accessorio> selezionati = tuttiAccessori.stream()
-                    .filter(a -> accessoriIds.contains(a.getId()))
-                    .collect(Collectors.toList());
-
-            Prenotazione prenotazione = sistema.selezioneAccessori(selezionati, opzioni.getPrenotazione());
-            Prenotazione confermata = sistema.savePrenotazione(prenotazione);
-
-            return ResponseEntity.ok(confermata);
-
-        } catch (OperationException e) {
-            return ResponseEntity.badRequest().body("Errore: " + e.getMessage());
-        }
+        return null;
     }
 }
 

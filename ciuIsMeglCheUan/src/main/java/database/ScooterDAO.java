@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScooterDAO {
 
@@ -51,6 +53,46 @@ public class ScooterDAO {
             throw new DBConnectionException("Errore connessione al database");
         }
         return null;
+    }
+
+    public static List<Scooter> readScooter(String localita, String dataRitiro, String dataConsegna) throws DAOException, DBConnectionException {
+        List<Scooter> scooters = new ArrayList<>();
+
+        try {
+            Connection conn=DBManager.getConnection();
+
+            String query="SELECT s.* FROM Scooter s JOIN Agenzie a On s.agenziaId=a.Id JOIN Prenotazioni p ON p.scooterTarga=s.targa WHERE a.località=? AND s.stato = 'in-servizio' AND (p.id IS NULL OR (p.dataConsegna <= ? OR p.dataRitiro >= ?))";
+
+            try {
+                PreparedStatement ps= conn.prepareStatement(query);
+
+                ps.setString(1,localita);
+                ps.setString(2,dataRitiro);
+                ps.setString(3,dataConsegna);
+
+                ResultSet rs=ps.executeQuery();
+
+                while(rs.next()){
+                    String tar=rs.getString("targa");
+                    int cil=rs.getInt("cilindrata");
+                    float pas=rs.getFloat("prezzoPerGiornoNoleggioAltaStagione");
+                    float pbs=rs.getFloat("prezzoPerGiornoNoleggioBassaStagione");
+                    String stato=rs.getString("stato");
+                    String tipologia=rs.getString("tipologia");
+                    int agenziaId=rs.getInt("agenziaId");
+
+                    scooters.add(new Scooter(tar,cil,pas,pbs,tipologia,agenziaId));
+
+                }
+            } catch (SQLException e) {
+                throw new DAOException("Errore lettura Accessorio");
+            } finally {
+                DBManager.closeConnection();
+            }
+        }catch(SQLException e){
+            throw new DBConnectionException("Errore connessione al database");
+        }
+        return scooters;
     }
 
     public static int updateScooter(){

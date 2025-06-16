@@ -6,6 +6,7 @@ import exception.DAOException;
 import exception.DBConnectionException;
 import exception.OperationException;
 import util.OpzioniPrenotazioneResult;
+import util.OpzioniScooterResult;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -99,6 +100,26 @@ public class GestioneSistemaPrenotazione {
             return prenotazione;
         } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
+        }
+    }
+
+    public List<Scooter> ricercaScooter(String localita, String dataRitiro, String dataConsegna) throws OperationException {
+        try {
+            return ScooterDAO.readScooter(localita, dataRitiro, dataConsegna);
+        } catch (DAOException | DBConnectionException e) {
+            throw new OperationException(e.getMessage());
+        }
+    }
+
+    public OpzioniScooterResult selezionaScooter(Scooter scooter) throws OperationException {
+        try {
+            float prezzoBassaStagione=scooter.getPrezzoPerGiornoNoleggioBassaStagione();
+
+            List<Accessorio> acc=AccessorioDAO.readAccessorio();
+
+            return new OpzioniScooterResult(acc, prezzoBassaStagione);
+        } catch (DAOException | DBConnectionException e) {
+            throw new RuntimeException(e);
         }
     }
 
