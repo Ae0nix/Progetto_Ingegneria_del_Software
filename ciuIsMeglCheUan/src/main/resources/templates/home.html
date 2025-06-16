@@ -6,14 +6,57 @@
   <link rel="stylesheet" href="home.css">
 </head>
 <body>
+<!-- Barra superiore con bottoni Login e Register -->
+<div class="top-bar">
+  <div class="auth-buttons">
+    <a href="/login" class="btn btn-login">Login</a>
+    <a href="/register" class="btn btn-register">Register</a>
+  </div>
+</div>
+
 <div class="container">
   <div class="homepage-logo">
     <img th:src="@{/logo.png}" alt="Logo">
   </div>
+
   <div class="search-box">
     <form method="GET" action="/cerca">
       <input type="text" name="query" placeholder="Cerca qualcosa...">
     </form>
+  </div>
+
+  <!-- Filtri Location e Dates -->
+  <div class="filters-container">
+    <div class="filter-group">
+      <label for="location-select">Location</label>
+      <select id="location-select" name="location" class="filter-dropdown">
+        <option value="">Seleziona località</option>
+        <option value="roma">Roma</option>
+        <option value="milano">Milano</option>
+        <option value="napoli">Napoli</option>
+        <option value="torino">Torino</option>
+        <option value="firenze">Firenze</option>
+        <!-- Aggiungi altre località -->
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="dates-select">Dates</label>
+      <select id="dates-select" name="dates" class="filter-dropdown">
+        <option value="">Seleziona periodo</option>
+        <option value="oggi">Oggi</option>
+        <option value="domani">Domani</option>
+        <option value="questa-settimana">Questa settimana</option>
+        <option value="prossima-settimana">Prossima settimana</option>
+        <option value="questo-mese">Questo mese</option>
+        <option value="prossimo-mese">Prossimo mese</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Footer con "powered by" -->
+  <div class="powered-by">
+    <p class="credits">Provided by CiùIsMeglCheUan</p>
   </div>
 </div>
 </body>
