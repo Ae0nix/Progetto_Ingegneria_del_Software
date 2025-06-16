@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Prenota Scooter</title>
+</head>
+<body>
+<h2>Prenotazione Scooter</h2>
+<form id="prenotazioneForm">
+    <label>Targa:</label>
+    <input type="text" name="targa" required><br>
+
+    <label>Data Ritiro:</label>
+    <input type="text" name="dataRitiro" placeholder="gg/mm/aaaa" required><br>
+
+    <label>Data Consegna:</label>
+    <input type="text" name="dataConsegna" placeholder="gg/mm/aaaa" required><br>
+
+    <label>Email:</label>
+    <input type="email" name="email" required><br>
+
+    <h3>Accessori:</h3>
+    <label><input type="checkbox" name="accessoriIds" value="1"> Casco</label><br>
+    <label><input type="checkbox" name="accessoriIds" value="2"> Bauletto</label><br>
+    <label><input type="checkbox" name="accessoriIds" value="3"> Navigatore</label><br>
+
+    <button type="submit">Prenota</button>
+</form>
+
+<script>
+    document.getElementById("prenotazioneForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        fetch("/prenotaScooter", {
+            method: "POST",
+            body: formData
+        }).then(res => res.json())
+            .then(data => alert("Prenotazione confermata:\n" + JSON.stringify(data)))
+            .catch(err => alert("Errore: " + err));
+    });
+</script>
+</body>
+</html>

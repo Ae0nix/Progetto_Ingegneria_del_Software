@@ -16,5 +16,13 @@ public class OpzioniPrenotazioneResult {
         this.prezzoBassaStagione = prezzoBassaStagione;
         this.prenotazione = prenotazione;
     }
+
+    public List<Accessorio> getAccessori() {
+        return accessori;
+    }
+
+    public Prenotazione getPrenotazione() {
+        return prenotazione;
+    }
 }
 

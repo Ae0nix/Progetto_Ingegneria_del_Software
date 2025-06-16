@@ -53,4 +53,20 @@ public class Prenotazione {
     public String getDataConsegna() {
         return dataConsegna;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public float getCostoTotale() {
+        return costoTotale;
+    }
+
+    public int getClienteRegistratoId() {
+        return clienteRegistratoId;
+    }
+
+    public String getScooterTarga() {
+        return scooterTarga;
+    }
 }
