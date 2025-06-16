@@ -3,32 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <title>Homepage</title>
-  <style>
-    body {
-      background-color: #0099d5;
-      height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .search-box {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-    }
-    input[type="text"] {
-      width: 300px;
-      padding: 10px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
-<div class="search-box">
-  <form method="GET" action="/cerca">
-    <input type="text" name="query" placeholder="Cerca qualcosa...">
-  </form>
+<div class="container">
+  <div class="homepage-logo">
+    <img th:src="@{/logo.png}" alt="Logo">
+  </div>
+  <div class="search-box">
+    <form method="GET" action="/cerca">
+      <input type="text" name="query" placeholder="Cerca qualcosa...">
+    </form>
+  </div>
 </div>
 </body>
 </html>
