@@ -111,9 +111,15 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-    public OpzioniScooterResult selezionaScooter(Scooter scooter) throws OperationException {
+    public OpzioniScooterResult selezionaScooter(String targa) throws OperationException {
         try {
-            float prezzoBassaStagione=scooter.getPrezzoPerGiornoNoleggioBassaStagione();
+
+            Scooter s=ScooterDAO.readScooter(targa);
+            if(s==null) {
+                throw new OperationException("Scooter non trovato");
+            }
+
+            float prezzoBassaStagione=s.getPrezzoPerGiornoNoleggioBassaStagione();
 
             List<Accessorio> acc=AccessorioDAO.readAccessorio();
 
