@@ -4,13 +4,13 @@ import control.GestioneSistemaPrenotazione;
 import entity.Scooter;
 import exception.OperationException;
 import util.OpzioniScooterResult;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 public class BCliente {
 
     private final GestioneSistemaPrenotazione gestioneSistema;
@@ -20,27 +20,31 @@ public class BCliente {
     }
 
     /**
-     * Endpoint per la ricerca degli scooter disponibili
-     * GET /api/cliente/ricerca?localita=Roma&dataRitiro=01/06/2024&dataConsegna=05/06/2024
+     * Endpoint per la ricerca degli scooter disponibili (restituisce template Thymeleaf)
+     * GET /ricerca?localita=Roma&dataRitiro=01/06/2024&dataConsegna=05/06/2024
      */
     @GetMapping("/ricerca")
-    public ResponseEntity<List<Scooter>> ricercaScooter(
+    public String ricercaScooter(
             @RequestParam("localita") String localita,
             @RequestParam("dataRitiro") String dataRitiro,
-            @RequestParam("dataConsegna") String dataConsegna) {
+            @RequestParam("dataConsegna") String dataConsegna,
+            Model model) {
 
         try {
             // Validazione parametri
             if (localita == null || localita.trim().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                model.addAttribute("error", "Località non specificata");
+                return "error";
             }
 
             if (dataRitiro == null || dataRitiro.trim().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                model.addAttribute("error", "Data ritiro non specificata");
+                return "error";
             }
 
             if (dataConsegna == null || dataConsegna.trim().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                model.addAttribute("error", "Data consegna non specificata");
+                return "error";
             }
 
             // Chiamata al sistema di controllo
@@ -50,37 +54,59 @@ public class BCliente {
                     dataConsegna.trim()
             );
 
-            return ResponseEntity.ok(scooterDisponibili);
+            model.addAttribute("scooters", scooterDisponibili);
+            model.addAttribute("localita", localita);
+            model.addAttribute("dataRitiro", dataRitiro);
+            model.addAttribute("dataConsegna", dataConsegna);
+
+            return "risultati-ricerca";
 
         } catch (OperationException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            model.addAttribute("error", "Errore durante la ricerca: " + e.getMessage());
+            return "error";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            model.addAttribute("error", "Errore interno del sistema");
+            return "error";
         }
     }
 
     /**
-     * Endpoint per la selezione dello scooter e visualizzazione opzioni
-     * GET /api/cliente/seleziona-scooter?targa=AB123CD
+     * Endpoint per la selezione dello scooter (restituisce template Thymeleaf)
+     * GET /seleziona-scooter?targa=AB123CD
      */
-    @GetMapping("/selezionaScooter")
-    public ResponseEntity<OpzioniScooterResult> selezionaScooter(@RequestParam("targa") String targa) {
+    @GetMapping("/seleziona-scooter")
+    public String selezionaScooter(@RequestParam("targa") String targa, Model model) {
 
         try {
             // Validazione della targa
             if (targa == null || targa.trim().isEmpty()) {
-                return ResponseEntity.badRequest().build();
+                model.addAttribute("error", "Targa non specificata");
+                return "error";
             }
 
             // Chiamata al sistema di controllo
             OpzioniScooterResult opzioni = gestioneSistema.selezionaScooter(targa.trim());
 
-            return ResponseEntity.ok(opzioni);
+            model.addAttribute("opzioni", opzioni);
+            model.addAttribute("targa", targa);
+
+            return "opzioni-scooter";
 
         } catch (OperationException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            model.addAttribute("error", "Errore durante la selezione: " + e.getMessage());
+            return "error";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            model.addAttribute("error", "Errore interno del sistema");
+            return "error";
         }
+    }
+
+    /**
+     * Endpoint per mostrare il form di ricerca
+     * GET /cliente/ricerca-form
+     */
+    @GetMapping("/home")
+    public String mostraFormRicerca() {
+        return "home";
     }
 }

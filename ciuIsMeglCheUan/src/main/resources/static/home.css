@@ -77,7 +77,7 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     animation: fadeInUp 0.8s ease-out;
 }
 
@@ -114,11 +114,6 @@ body {
     margin-bottom: 30px;
 }
 
-.search-box form {
-    width: 100%;
-    position: relative;
-}
-
 .search-box input[type="text"] {
     width: 100%;
     padding: 18px 25px;
@@ -140,27 +135,25 @@ body {
     transform: translateY(-2px);
 }
 
-.credits {
-    font-size: 0.8rem;
-    color: #c2bfbf;
-    text-align: center;
-    margin-top: 50px;
-}z
-
-
 .search-box input[type="text"]::placeholder {
     color: #999;
     font-weight: 400;
 }
 
-/* Filtri Location e Dates */
+/* Stili per il form */
+.search-form {
+    width: 100%;
+}
+
+/* Filtri Location e Dates - Layout ottimizzato con più spazio */
 .filters-container {
     display: flex;
     justify-content: center;
-    gap: 25px;
+    gap: 40px; /* Aumentato da 25px a 40px */
     margin-bottom: 40px;
     width: 100%;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    padding: 0 20px;
 }
 
 .filter-group {
@@ -169,18 +162,25 @@ body {
     align-items: center;
     gap: 12px;
     flex: 1;
-    min-width: 140px;
+    max-width: 180px;
+    min-width: 160px;
 }
 
 .filter-group label {
     font-weight: 600;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
     letter-spacing: 0.5px;
+    text-align: center;
+    white-space: nowrap;
+    text-transform: uppercase;
 }
 
-.filter-dropdown {
+/* Stili unificati per tutti i campi filtro */
+.filter-dropdown,
+input[type="date"] {
+    width: 80%;
     padding: 12px 18px;
     border: none;
     border-radius: 20px;
@@ -189,25 +189,67 @@ body {
     font-size: 14px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 100%;
-    max-width: 180px;
     outline: none;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     font-family: inherit;
     font-weight: 500;
+    color: #333;
+    box-sizing: border-box;
 }
 
 .filter-dropdown:hover,
-.filter-dropdown:focus {
+.filter-dropdown:focus,
+input[type="date"]:hover,
+input[type="date"]:focus {
     background: white;
     transform: translateY(-2px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Stili per il bottone di ricerca */
+.search-button-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn-search {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+    color: #0099d5;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
+}
+
+.btn-search:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.3);
+}
+
+/* Footer */
+.credits {
+    font-size: 0.8rem;
+    color: #c2bfbf;
+    text-align: center;
+    margin-top: 50px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     body {
         padding-top: 100px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 0 15px;
     }
 
     .top-bar {
@@ -225,15 +267,15 @@ body {
 
     .filters-container {
         flex-direction: column;
-        gap: 20px;
+        gap: 25px; /* Aumentato anche qui da 20px a 25px */
+        align-items: center;
+        padding: 0 10px;
     }
 
     .filter-group {
-        min-width: unset;
-    }
-
-    .filter-dropdown {
-        max-width: 220px;
+        max-width: 300px;
+        min-width: 250px;
+        width: 100%;
     }
 }
 
@@ -264,6 +306,16 @@ body {
 
     .auth-buttons {
         gap: 10px;
+    }
+
+    .filters-container {
+        gap: 20px; /* Aumentato anche qui da 15px a 20px */
+        padding: 0 5px;
+    }
+
+    .filter-group {
+        max-width: 280px;
+        min-width: 240px;
     }
 }
 

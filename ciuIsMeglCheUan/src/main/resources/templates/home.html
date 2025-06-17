@@ -19,45 +19,76 @@
     <img th:src="@{/logo.png}" alt="Logo">
   </div>
 
-  <div class="search-box">
-    <form method="GET" action="/cerca">
-      <input type="text" name="query" placeholder="Cerca qualcosa...">
-    </form>
-  </div>
+  <!-- Form unificato per ricerca con tutti i parametri -->
+  <form method="GET" action="/ricerca" class="search-form">
 
-  <!-- Filtri Location e Dates -->
-  <div class="filters-container">
-    <div class="filter-group">
-      <label for="location-select">Location</label>
-      <select id="location-select" name="location" class="filter-dropdown">
-        <option value="">Seleziona località</option>
-        <option value="roma">Roma</option>
-        <option value="milano">Milano</option>
-        <option value="napoli">Napoli</option>
-        <option value="torino">Torino</option>
-        <option value="firenze">Firenze</option>
-        <!-- Aggiungi altre località -->
-      </select>
+    <!-- Filtri Location e Dates -->
+    <div class="filters-container">
+      <div class="filter-group">
+        <label for="location-select">Location</label>
+        <select id="location-select" name="localita" class="filter-dropdown" required>
+          <option value="">Seleziona località</option>
+          <option value="Roma">Roma</option>
+          <option value="Milano">Milano</option>
+          <option value="Napoli">Napoli</option>
+          <option value="Torino">Torino</option>
+          <option value="Firenze">Firenze</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="data-ritiro">Data Ritiro</label>
+        <input type="date" id="data-ritiro" name="dataRitiro" class="filter-dropdown" required>
+      </div>
+
+      <div class="filter-group">
+        <label for="data-consegna">Data Consegna</label>
+        <input type="date" id="data-consegna" name="dataConsegna" class="filter-dropdown" required>
+      </div>
     </div>
 
-    <div class="filter-group">
-      <label for="dates-select">Dates</label>
-      <select id="dates-select" name="dates" class="filter-dropdown">
-        <option value="">Seleziona periodo</option>
-        <option value="oggi">Oggi</option>
-        <option value="domani">Domani</option>
-        <option value="questa-settimana">Questa settimana</option>
-        <option value="prossima-settimana">Prossima settimana</option>
-        <option value="questo-mese">Questo mese</option>
-        <option value="prossimo-mese">Prossimo mese</option>
-      </select>
+    <!-- Bottone di ricerca -->
+    <div class="search-button-container" style="text-align: center; margin-top: 20px;">
+      <button type="submit" class="btn-search">
+        🔍 Cerca Scooter
+      </button>
     </div>
-  </div>
+
+  </form>
 
   <!-- Footer con "powered by" -->
   <div class="powered-by">
     <p class="credits">Provided by CiùIsMeglCheUan</p>
   </div>
 </div>
+
+<style>
+  /* Stili aggiuntivi per il form */
+  .search-form {
+    width: 100%;
+  }
+
+  .btn-search {
+    background: linear-gradient(45deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+    color: #0099d5;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+    letter-spacing: 0.5px;
+  }
+
+  .btn-search:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(255, 255, 255, 0.3);
+  }
+</style>
+
 </body>
 </html>
