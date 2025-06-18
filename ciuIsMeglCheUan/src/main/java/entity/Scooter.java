@@ -42,4 +42,12 @@ public class Scooter {
     public float getPrezzoPerGiornoNoleggioAltaStagione() {
         return prezzoPerGiornoNoleggioAltaStagione;
     }
+
+    public int getCilindrata() {
+        return cilindrata;
+    }
+
+    public String getTipologia() {
+        return tipologia;
+    }
 }

@@ -3,6 +3,8 @@ package database;
 import entity.Scooter;
 import exception.DAOException;
 import exception.DBConnectionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScooterDAO {
+    private static final Logger logger = LoggerFactory.getLogger(ScooterDAO.class);
 
     public static int createScooter(){
         return 0;
@@ -72,7 +75,10 @@ public class ScooterDAO {
 
                 ResultSet rs=ps.executeQuery();
 
+                logger.debug("Query eseguita");
+
                 while(rs.next()){
+
                     String tar=rs.getString("targa");
                     int cil=rs.getInt("cilindrata");
                     float pas=rs.getFloat("prezzoPerGiornoNoleggioAltaStagione");
@@ -81,11 +87,13 @@ public class ScooterDAO {
                     String tipologia=rs.getString("tipologia");
                     int agenziaId=rs.getInt("agenziaId");
 
+                    logger.debug("Scooter trovato: targa={}, cilindrata={}", tar, cil);
+
                     scooters.add(new Scooter(tar,cil,pas,pbs,tipologia,agenziaId));
 
                 }
             } catch (SQLException e) {
-                throw new DAOException("Errore lettura Accessorio");
+                throw new DAOException("Errore lettura Scooter");
             } finally {
                 DBManager.closeConnection();
             }

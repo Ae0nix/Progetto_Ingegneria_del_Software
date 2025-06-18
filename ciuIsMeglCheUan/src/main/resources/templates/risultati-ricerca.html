@@ -371,39 +371,19 @@
 
                     <!-- Dettagli dello scooter -->
                     <div class="scooter-details">
-                        <div class="detail-row" th:if="${scooter.marca}">
-                            <span class="detail-label">Marca:</span>
-                            <span class="detail-value" th:text="${scooter.marca}">Honda</span>
-                        </div>
-
-                        <div class="detail-row" th:if="${scooter.modello}">
-                            <span class="detail-label">Modello:</span>
-                            <span class="detail-value" th:text="${scooter.modello}">SH 125</span>
-                        </div>
-
-                        <div class="detail-row" th:if="${scooter.anno}">
-                            <span class="detail-label">Anno:</span>
-                            <span class="detail-value" th:text="${scooter.anno}">2023</span>
-                        </div>
-
                         <div class="detail-row" th:if="${scooter.cilindrata}">
                             <span class="detail-label">Cilindrata:</span>
                             <span class="detail-value" th:text="${scooter.cilindrata + ' cc'}">125 cc</span>
                         </div>
 
-                        <div class="detail-row" th:if="${scooter.colore}">
-                            <span class="detail-label">Colore:</span>
-                            <span class="detail-value" th:text="${scooter.colore}">Rosso</span>
+                        <div class="detail-row" th:if="${scooter.tipologia}">
+                            <span class="detail-label">Tipologia:</span>
+                            <span class="detail-value" th:text="${scooter.tipologia}">tradizionale</span>
                         </div>
 
-                        <div class="detail-row" th:if="${scooter.localita}">
-                            <span class="detail-label">Località:</span>
-                            <span class="detail-value" th:text="${scooter.localita}">Roma</span>
-                        </div>
-
-                        <div class="detail-row" th:if="${scooter.prezzoGiornaliero}">
+                        <div class="detail-row" th:if="${scooter.prezzoPerGiornoNoleggioBassaStagione}">
                             <span class="detail-label">Prezzo/giorno:</span>
-                            <span class="detail-value" th:text="${'€ ' + scooter.prezzoGiornaliero}">€ 25.00</span>
+                            <span class="detail-value" th:text="${'€ ' + scooter.prezzoPerGiornoNoleggioBassaStagione}">€ 25.00</span>
                         </div>
                     </div>
 
