@@ -6,7 +6,6 @@ import exception.DAOException;
 import exception.DBConnectionException;
 import exception.OperationException;
 import util.OpzioniPrenotazioneResult;
-import util.OpzioniScooterResult;
 
 import java.time.LocalDate;
 import java.time.MonthDay;
@@ -50,8 +49,7 @@ public class GestioneSistemaPrenotazione {
         //registrazione su DB del cliente
     }*/
 
-    public OpzioniPrenotazioneResult visualizzaOpzioniDiPrenotazioneCosti(String targaScooter, String dataRitiro, String dataConsegna, String email) throws OperationException {
-
+    public OpzioniPrenotazioneResult visualizzaOpzioniDiPrenotazioneCosti(String targaScooter) throws OperationException {
         try {
             Scooter s=ScooterDAO.readScooter(targaScooter);
 
@@ -61,29 +59,36 @@ public class GestioneSistemaPrenotazione {
 
             float pbs=s.getPrezzoPerGiornoNoleggioBassaStagione();
 
-            List<Accessorio> acc= null;
-            acc = AccessorioDAO.readAccessorio();
+            List<Accessorio> acc = AccessorioDAO.readAccessorio();
 
             if (acc.isEmpty()) {
                 throw new OperationException("Nessun accessorio trovato");
             }
 
-            ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
-
-            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
-
-            return new OpzioniPrenotazioneResult(acc,pbs,eP);
+            return new OpzioniPrenotazioneResult(acc,pbs,s);
 
         } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
         }
     }
 
-    public Prenotazione selezioneAccessori(List<Accessorio> acc, Prenotazione prenotazione) throws OperationException {
-        prenotazione.setAccessori(acc);
-        float costo=calcoloCostoPrenotazione(prenotazione);
-        prenotazione.setCostoTotale(costo);
-        return prenotazione;
+    public Prenotazione selezioneAccessori(List<Accessorio> acc,String dataRitiro, String dataConsegna, String email, Scooter scooter) throws OperationException {
+        try {
+            ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
+
+            if(cr==null) {
+                throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
+            }
+
+            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,scooter);
+
+            eP.setAccessori(acc);
+            float costo=calcoloCostoPrenotazione(eP);
+            eP.setCostoTotale(costo);
+            return eP;
+        } catch (DBConnectionException | DAOException e) {
+            throw new OperationException(e.getMessage());
+        }
     }
 
     public Prenotazione savePrenotazione(Prenotazione prenotazione) throws OperationException {
@@ -108,23 +113,6 @@ public class GestioneSistemaPrenotazione {
             return ScooterDAO.readScooter(localita, dataRitiro, dataConsegna);
         } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
-        }
-    }
-
-    public OpzioniScooterResult selezionaScooter(String targa) throws OperationException {
-        try {
-            Scooter s=ScooterDAO.readScooter(targa);
-            if(s==null) {
-                throw new OperationException("Scooter non trovato");
-            }
-
-            float prezzoBassaStagione=s.getPrezzoPerGiornoNoleggioBassaStagione();
-
-            List<Accessorio> acc=AccessorioDAO.readAccessorio();
-
-            return new OpzioniScooterResult(acc, prezzoBassaStagione);
-        } catch (DAOException | DBConnectionException e) {
-            throw new RuntimeException(e);
         }
     }
 

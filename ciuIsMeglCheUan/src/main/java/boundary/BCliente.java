@@ -3,10 +3,10 @@ package boundary;
 import control.GestioneSistemaPrenotazione;
 import entity.Scooter;
 import exception.OperationException;
-import util.OpzioniScooterResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import util.OpzioniPrenotazioneResult;
 
 import java.util.List;
 
@@ -71,33 +71,32 @@ public class BCliente {
     }
 
     /**
-     * Endpoint per la selezione dello scooter (restituisce template Thymeleaf)
-     * GET /seleziona-scooter?targa=AB123CD
+     * Endpoint per visualizzare le opzioni di prenotazione e i costi di uno scooter.
+     * Da visualizzare in popup (modal) nella pagina Thymeleaf.
+     * GET /opzioni-prenotazione?targa=ABC123
      */
-    @GetMapping("/selezionaScooter")
-    public String selezionaScooter(@RequestParam("targa") String targa, Model model) {
-
+    @GetMapping("/opzioniPrenotazione")
+    public String visualizzaOpzioniPrenotazione(@RequestParam("targa") String targaScooter, Model model) {
         try {
-            // Validazione della targa
-            if (targa == null || targa.trim().isEmpty()) {
-                model.addAttribute("error", "Targa non specificata");
-                return "error";
+            if (targaScooter == null || targaScooter.trim().isEmpty()) {
+                model.addAttribute("error", "Targa scooter non specificata");
+                return "fragments/errore-popup :: errorePopupContent";
             }
 
-            // Chiamata al sistema di controllo
-            OpzioniScooterResult opzioni = gestioneSistema.selezionaScooter(targa.trim());
+            OpzioniPrenotazioneResult result = gestioneSistema.visualizzaOpzioniDiPrenotazioneCosti(targaScooter.trim());
 
-            model.addAttribute("opzioni", opzioni);
-            model.addAttribute("targa", targa);
+            model.addAttribute("scooter", result.getScooter());
+            model.addAttribute("prezzoBassaStagione", result.getPrezzoBassaStagione());
+            model.addAttribute("accessori", result.getAccessori());
 
-            return "opzioni-scooter";
-
+            // Ritorna il fragment Thymeleaf che rappresenta il contenuto del popup/modal
+            return "fragments/opzioni-prenotazione :: opzioniPrenotazioneContent";
         } catch (OperationException e) {
-            model.addAttribute("error", "Errore durante la selezione: " + e.getMessage());
-            return "error";
+            model.addAttribute("error", "Errore durante il recupero delle opzioni: " + e.getMessage());
+            return "fragments/errore-popup :: errorePopupContent";
         } catch (Exception e) {
             model.addAttribute("error", "Errore interno del sistema");
-            return "error";
+            return "fragments/errore-popup :: errorePopupContent";
         }
     }
 

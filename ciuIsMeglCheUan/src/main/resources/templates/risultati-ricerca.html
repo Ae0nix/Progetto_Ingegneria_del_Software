@@ -375,12 +375,10 @@
                             <span class="detail-label">Cilindrata:</span>
                             <span class="detail-value" th:text="${scooter.cilindrata + ' cc'}">125 cc</span>
                         </div>
-
                         <div class="detail-row" th:if="${scooter.tipologia}">
                             <span class="detail-label">Tipologia:</span>
                             <span class="detail-value" th:text="${scooter.tipologia}">tradizionale</span>
                         </div>
-
                         <div class="detail-row" th:if="${scooter.prezzoPerGiornoNoleggioBassaStagione}">
                             <span class="detail-label">A partire da:</span>
                             <span class="detail-value" th:text="${'€ ' + scooter.prezzoPerGiornoNoleggioBassaStagione}">€ 25.00</span>
@@ -389,10 +387,12 @@
 
                     <!-- Azioni -->
                     <div class="scooter-actions">
-                        <a th:href="@{/selezionaScooter(targa=${scooter.targa})}"
-                           class="btn-seleziona">
-                            Seleziona Questo Scooter
-                        </a>
+                        <button
+                                class="btn-seleziona"
+                                type="button"
+                                th:attr="onclick=|showOpzioniPrenotazionePopup('${scooter.targa}')|">
+                            Mostra Opzioni Prenotazione
+                        </button>
                     </div>
 
                 </div>
@@ -413,11 +413,45 @@
 
     </div>
 
+    <!-- Popup/modal per opzioni prenotazione -->
+    <div id="opzioniPrenotazioneModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);">
+        <div style="background:white; border-radius:18px; max-width:520px; margin:60px auto; padding:35px; position:relative;" id="opzioniPrenotazioneContent">
+            <!-- Il contenuto sarà caricato via AJAX -->
+            <button style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:22px; cursor:pointer;" onclick="closeOpzioniPrenotazionePopup()">&times;</button>
+            <div class="loading-message" id="opzioniPrenotazioneLoading">Caricamento opzioni...</div>
+            <div id="opzioniPrenotazioneInner"></div>
+        </div>
+    </div>
+
     <!-- Footer con "powered by" -->
     <div class="powered-by">
         <p class="credits">Provided by CiùIsMeglCheUan</p>
     </div>
 </div>
 
+<script>
+    function showOpzioniPrenotazionePopup(targa) {
+        // Mostra il modal
+        document.getElementById('opzioniPrenotazioneModal').style.display = 'block';
+        document.getElementById('opzioniPrenotazioneLoading').style.display = 'block';
+        document.getElementById('opzioniPrenotazioneInner').innerHTML = '';
+
+        // AJAX per caricare il fragment Thymeleaf
+        fetch('/opzioniPrenotazione?targa=' + encodeURIComponent(targa))
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('opzioniPrenotazioneInner').innerHTML = html;
+                document.getElementById('opzioniPrenotazioneLoading').style.display = 'none';
+            })
+            .catch(() => {
+                document.getElementById('opzioniPrenotazioneInner').innerHTML = '<div style="color:red;">Errore durante il caricamento delle opzioni.</div>';
+                document.getElementById('opzioniPrenotazioneLoading').style.display = 'none';
+            });
+    }
+
+    function closeOpzioniPrenotazionePopup() {
+        document.getElementById('opzioniPrenotazioneModal').style.display = 'none';
+    }
+</script>
 </body>
 </html>

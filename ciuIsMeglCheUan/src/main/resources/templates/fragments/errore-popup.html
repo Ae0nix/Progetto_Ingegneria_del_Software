@@ -1,0 +1,9 @@
+<div th:fragment="errorePopupContent">
+    <div style="color:#dc3545; font-weight:bold; font-size:18px; margin-bottom:18px;">
+        <span th:text="${error}">Errore sconosciuto</span>
+    </div>
+    <div style="text-align:center;">
+        <button style="background:#dc3545; color:white; border:none; padding:12px 30px; border-radius:20px; font-weight:600; cursor:pointer;"
+                onclick="closeOpzioniPrenotazionePopup()">Chiudi</button>
+    </div>
+</div>
