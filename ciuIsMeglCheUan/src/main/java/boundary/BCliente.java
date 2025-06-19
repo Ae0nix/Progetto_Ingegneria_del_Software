@@ -74,7 +74,7 @@ public class BCliente {
      * Endpoint per la selezione dello scooter (restituisce template Thymeleaf)
      * GET /seleziona-scooter?targa=AB123CD
      */
-    @GetMapping("/seleziona-scooter")
+    @GetMapping("/selezionaScooter")
     public String selezionaScooter(@RequestParam("targa") String targa, Model model) {
 
         try {

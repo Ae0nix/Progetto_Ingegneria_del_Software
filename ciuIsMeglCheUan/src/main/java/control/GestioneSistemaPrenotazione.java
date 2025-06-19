@@ -113,7 +113,6 @@ public class GestioneSistemaPrenotazione {
 
     public OpzioniScooterResult selezionaScooter(String targa) throws OperationException {
         try {
-
             Scooter s=ScooterDAO.readScooter(targa);
             if(s==null) {
                 throw new OperationException("Scooter non trovato");
