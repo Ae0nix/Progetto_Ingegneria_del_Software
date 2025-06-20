@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestioneSistemaPrenotazione {
@@ -72,15 +73,29 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-    public Prenotazione selezioneAccessori(List<Accessorio> acc,String dataRitiro, String dataConsegna, String email, Scooter scooter) throws OperationException {
+    public Prenotazione selezioneAccessori(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String targa) throws OperationException {
         try {
+            Scooter s=ScooterDAO.readScooter(targa);
+
+            if(s==null) {
+                throw new OperationException("Scooter non trovato");
+            }
+
             ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
 
             if(cr==null) {
                 throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
             }
 
-            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,scooter);
+            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
+
+            List<Accessorio> acc=new ArrayList<>();
+            for(int id:accId){
+                Accessorio a=AccessorioDAO.readAccessorio(id);
+                if (a != null) {
+                    acc.add(a);
+                }
+            }
 
             eP.setAccessori(acc);
             float costo=calcoloCostoPrenotazione(eP);
@@ -117,16 +132,17 @@ public class GestioneSistemaPrenotazione {
     }
 
     private float calcoloCostoPrenotazione(Prenotazione prenotazione) {
-        float costo=0;
-        List<Accessorio> acc=prenotazione.getAccessori();
-        for(Accessorio a:acc){
-            costo+=a.getPrezzo();
+        float costo = 0;
+        List<Accessorio> acc = prenotazione.getAccessori();
+        for (Accessorio a : acc) {
+            costo += a.getPrezzo();
         }
 
         // Recupera scooter e date
         Scooter scooter = prenotazione.getScooter();
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        // CORRETTO formato yyyy-MM-dd
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ritiro = LocalDate.parse(prenotazione.getDataRitiro(), formatter);
         LocalDate consegna = LocalDate.parse(prenotazione.getDataConsegna(), formatter);
 

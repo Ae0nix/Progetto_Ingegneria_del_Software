@@ -72,7 +72,37 @@ public class AccessorioDAO {
         return accessori;
     }
 
+    public static Accessorio readAccessorio(int id) throws DAOException, DBConnectionException {
+        try {
+            Connection conn = DBManager.getConnection();
 
+            String query = "SELECT * FROM Accessori WHERE id = ?;";
+
+            try {
+                PreparedStatement ps = conn.prepareStatement(query);
+
+                ps.setInt(1, id);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    int ida = rs.getInt("id");
+                    String descrizione = rs.getString("descrizione");
+                    float prezzo = rs.getFloat("prezzo");
+                    String tipo = rs.getString("tipo");
+
+                    Accessorio acc = new Accessorio(descrizione, prezzo, tipo);
+                    acc.setId(id);
+                    return acc;
+                }
+            } catch (SQLException e) {
+                throw new DAOException("Errore lettura Accessorio");
+            } finally {
+                DBManager.closeConnection();
+            }
+        }catch(SQLException e){
+            throw new DBConnectionException("Errore connessione al database");
+        }
+        return null;
+    }
 
     public static int updateAccessorio(int idDaModificare, Accessorio accessorio) throws DAOException, DBConnectionException {
         try {

@@ -24,4 +24,16 @@ public class ClienteRegistrato {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCognome() {
+        return cognome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

@@ -76,7 +76,11 @@ public class BCliente {
      * GET /opzioni-prenotazione?targa=ABC123
      */
     @GetMapping("/opzioniPrenotazione")
-    public String visualizzaOpzioniPrenotazione(@RequestParam("targa") String targaScooter, Model model) {
+    public String visualizzaOpzioniPrenotazione(
+            @RequestParam("targa") String targaScooter,
+            @RequestParam(value = "dataRitiro", required = false) String dataRitiro,
+            @RequestParam(value = "dataConsegna", required = false) String dataConsegna,
+            Model model) {
         try {
             if (targaScooter == null || targaScooter.trim().isEmpty()) {
                 model.addAttribute("error", "Targa scooter non specificata");
@@ -88,8 +92,10 @@ public class BCliente {
             model.addAttribute("scooter", result.getScooter());
             model.addAttribute("prezzoBassaStagione", result.getPrezzoBassaStagione());
             model.addAttribute("accessori", result.getAccessori());
+            // AGGIUNGI QUESTE RIGHE:
+            model.addAttribute("dataRitiro", dataRitiro);
+            model.addAttribute("dataConsegna", dataConsegna);
 
-            // Ritorna il fragment Thymeleaf che rappresenta il contenuto del popup/modal
             return "fragments/opzioni-prenotazione :: opzioniPrenotazioneContent";
         } catch (OperationException e) {
             model.addAttribute("error", "Errore durante il recupero delle opzioni: " + e.getMessage());

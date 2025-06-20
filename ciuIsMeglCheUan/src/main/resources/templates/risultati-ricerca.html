@@ -328,8 +328,7 @@
                 font-size: 15px;
             }
         }
-    </style>
-</head>
+    </style></head>
 <body>
 <!-- Barra superiore con bottoni Login e Register -->
 <div class="top-bar">
@@ -360,7 +359,6 @@
         <div th:if="${scooters != null and !scooters.isEmpty()}">
             <div class="results-grid">
                 <div class="scooter-card" th:each="scooter : ${scooters}">
-
                     <!-- Header della card con targa e stato -->
                     <div class="scooter-header">
                         <div class="scooter-targa" th:text="${scooter.targa}">AB123CD</div>
@@ -368,7 +366,6 @@
                             Disponibile
                         </div>
                     </div>
-
                     <!-- Dettagli dello scooter -->
                     <div class="scooter-details">
                         <div class="detail-row" th:if="${scooter.cilindrata}">
@@ -384,17 +381,15 @@
                             <span class="detail-value" th:text="${'€ ' + scooter.prezzoPerGiornoNoleggioBassaStagione}">€ 25.00</span>
                         </div>
                     </div>
-
                     <!-- Azioni -->
                     <div class="scooter-actions">
                         <button
                                 class="btn-seleziona"
                                 type="button"
-                                th:attr="onclick=|showOpzioniPrenotazionePopup('${scooter.targa}')|">
+                                th:attr="data-targa=${scooter.targa},data-ritiro=${dataRitiro},data-consegna=${dataConsegna}">
                             Mostra Opzioni Prenotazione
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -430,14 +425,28 @@
 </div>
 
 <script>
-    function showOpzioniPrenotazionePopup(targa) {
+    // Attacco event listener a tutti i bottoni dopo il render
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('.btn-seleziona').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const targa = this.getAttribute('data-targa');
+                const dataRitiro = this.getAttribute('data-ritiro');
+                const dataConsegna = this.getAttribute('data-consegna');
+                showOpzioniPrenotazionePopup(targa, dataRitiro, dataConsegna);
+            });
+        });
+    });
+
+    function showOpzioniPrenotazionePopup(targa, dataRitiro, dataConsegna) {
         // Mostra il modal
         document.getElementById('opzioniPrenotazioneModal').style.display = 'block';
         document.getElementById('opzioniPrenotazioneLoading').style.display = 'block';
         document.getElementById('opzioniPrenotazioneInner').innerHTML = '';
 
         // AJAX per caricare il fragment Thymeleaf
-        fetch('/opzioniPrenotazione?targa=' + encodeURIComponent(targa))
+        fetch('/opzioniPrenotazione?targa=' + encodeURIComponent(targa) +
+            '&dataRitiro=' + encodeURIComponent(dataRitiro) +
+            '&dataConsegna=' + encodeURIComponent(dataConsegna))
             .then(response => response.text())
             .then(html => {
                 document.getElementById('opzioniPrenotazioneInner').innerHTML = html;

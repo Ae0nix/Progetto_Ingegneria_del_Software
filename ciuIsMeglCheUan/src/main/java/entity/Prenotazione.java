@@ -69,4 +69,8 @@ public class Prenotazione {
     public String getScooterTarga() {
         return scooterTarga;
     }
+
+    public ClienteRegistrato getClienteRegistrato() {
+        return clienteRegistrato;
+    }
 }
