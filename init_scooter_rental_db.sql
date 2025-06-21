@@ -5,11 +5,11 @@ CREATE TABLE Titolari (
     password VARCHAR(20) NOT NULL
 );
 
-CREATE TABLE agenzie (
+CREATE TABLE Agenzie (
     id INT(10) PRIMARY KEY AUTO_INCREMENT,
     località VARCHAR(20) NOT NULL,
-    indirizzo VARCHAR(20) NOT NULL,
-    email VARCHAR(20),
+    indirizzo VARCHAR(30) NOT NULL,
+    email VARCHAR(30),
     numeroDiTelefono VARCHAR(20),
     usernameTitolare VARCHAR(20),
     FOREIGN KEY (usernameTitolare) REFERENCES Titolari(username)
@@ -20,7 +20,7 @@ CREATE TABLE ClientiRegistrati (
     nome VARCHAR(20) NOT NULL,
     cognome VARCHAR(20) NOT NULL,
     dataDiNascita VARCHAR(10) NOT NULL,
-    email VARCHAR(20) UNIQUE NOT NULL,
+    email VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(20) NOT NULL
 );
 
@@ -32,7 +32,7 @@ CREATE TABLE Scooter (
     stato VARCHAR(20) NOT NULL,
     tipologia VARCHAR(20),
     agenziaId INT(10),
-    FOREIGN KEY (agenziaId) REFERENCES agenzie(id)
+    FOREIGN KEY (agenziaId) REFERENCES Agenzie(id)
 );
 
 CREATE TABLE Accessori (

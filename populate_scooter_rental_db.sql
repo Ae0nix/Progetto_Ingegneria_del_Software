@@ -9,7 +9,7 @@ INSERT INTO Titolari (username, password) VALUES
 ('carla_gialli', 'rental123');
 
 -- Inserimento Agenzie
-INSERT INTO agenzie (località, indirizzo, email, numeroDiTelefono, usernameTitolare) VALUES
+INSERT INTO Agenzie (località, indirizzo, email, numeroDiTelefono, usernameTitolare) VALUES
 ('Roma', 'Via del Corso 45', 'roma@scooter.it', '06-12345678', 'mario_rossi'),
 ('Milano', 'Corso Buenos Aires 12', 'milano@scooter.it', '02-87654321', 'luigi_bianchi'),
 ('Napoli', 'Via Toledo 88', 'napoli@scooter.it', '081-11223344', 'anna_verdi'),
@@ -42,38 +42,38 @@ INSERT INTO ClientiRegistrati (nome, cognome, dataDiNascita, email, password) VA
 -- Inserimento Scooter (Prezzi fissi: Alta Stagione 50€, Bassa Stagione 20€)
 INSERT INTO Scooter (targa, cilindrata, prezzoPerGiornoNoleggioAltaStagione, prezzoPerGiornoNoleggioBassaStagione, stato, tipologia, agenziaId) VALUES
 -- Roma
-('AB123CD', 125, 50.00, 20.00, 'disponibile', 'tradizionale', 1),
-('EF456GH', 150, 50.00, 20.00, 'disponibile', 'elettrico', 1),
-('IJ789KL', 125, 50.00, 20.00, 'noleggiato', 'tradizionale', 1),
-('MN012OP', 300, 50.00, 20.00, 'disponibile', 'tradizionale', 1),
+('AB123CD', 125, 50.00, 20.00, 'in-servizio', 'tradizionale', 1),
+('EF456GH', 150, 50.00, 20.00, 'in-servizio', 'elettrico', 1),
+('IJ789KL', 125, 50.00, 20.00, 'dismesso', 'tradizionale', 1),
+('MN012OP', 300, 50.00, 20.00, 'in-servizio', 'tradizionale', 1),
 -- Milano
 ('QR345ST', 125, 50.00, 20.00, 'manutenzione', 'elettrico', 2),
-('UV678WX', 150, 50.00, 20.00, 'disponibile', 'tradizionale', 2),
-('YZ901AB', 50, 50.00, 20.00, 'disponibile', 'elettrico', 2),
-('CD234EF', 125, 50.00, 20.00, 'disponibile', 'tradizionale', 2),
-('GH567IJ', 300, 50.00, 20.00, 'noleggiato', 'tradizionale', 2),
+('UV678WX', 150, 50.00, 20.00, 'in-servizio', 'tradizionale', 2),
+('YZ901AB', 50, 50.00, 20.00, 'in-servizio', 'elettrico', 2),
+('CD234EF', 125, 50.00, 20.00, 'in-servizio', 'tradizionale', 2),
+('GH567IJ', 300, 50.00, 20.00, 'dismesso', 'tradizionale', 2),
 -- Napoli
-('KL890MN', 150, 50.00, 20.00, 'disponibile', 'elettrico', 3),
-('OP123QR', 125, 50.00, 20.00, 'disponibile', 'tradizionale', 3),
-('ST456UV', 50, 50.00, 20.00, 'disponibile', 'elettrico', 3),
-('WX789YZ', 300, 50.00, 20.00, 'disponibile', 'tradizionale', 3),
+('KL890MN', 150, 50.00, 20.00, 'in-servizio', 'elettrico', 3),
+('OP123QR', 125, 50.00, 20.00, 'in-servizio', 'tradizionale', 3),
+('ST456UV', 50, 50.00, 20.00, 'in-servizio', 'elettrico', 3),
+('WX789YZ', 300, 50.00, 20.00, 'in-servizio', 'tradizionale', 3),
 -- Firenze
 ('AB012CD', 150, 50.00, 20.00, 'manutenzione', 'elettrico', 4),
-('EF345GH', 125, 50.00, 20.00, 'disponibile', 'tradizionale', 4),
-('IJ678KL', 50, 50.00, 20.00, 'noleggiato', 'elettrico', 4),
-('MN901OP', 300, 50.00, 20.00, 'disponibile', 'tradizionale', 4),
+('EF345GH', 125, 50.00, 20.00, 'in-servizio', 'tradizionale', 4),
+('IJ678KL', 50, 50.00, 20.00, 'dismesso', 'elettrico', 4),
+('MN901OP', 300, 50.00, 20.00, 'in-servizio', 'tradizionale', 4),
 -- Venezia
-('QR234ST', 125, 50.00, 20.00, 'disponibile', 'elettrico', 5),
-('UV567WX', 150, 50.00, 20.00, 'disponibile', 'tradizionale', 5),
-('YZ890AB', 50, 50.00, 20.00, 'disponibile', 'elettrico', 5),
-('CD123EF', 125, 50.00, 20.00, 'disponibile', 'tradizionale', 5),
+('QR234ST', 125, 50.00, 20.00, 'in-servizio', 'elettrico', 5),
+('UV567WX', 150, 50.00, 20.00, 'in-servizio', 'tradizionale', 5),
+('YZ890AB', 50, 50.00, 20.00, 'in-servizio', 'elettrico', 5),
+('CD123EF', 125, 50.00, 20.00, 'in-servizio', 'tradizionale', 5),
 -- Bologna
-('GH456IJ', 150, 50.00, 20.00, 'disponibile', 'elettrico', 6),
-('KL789MN', 300, 50.00, 20.00, 'disponibile', 'tradizionale', 6),
-('OP012QR', 125, 50.00, 20.00, 'noleggiato', 'elettrico', 6),
+('GH456IJ', 150, 50.00, 20.00, 'in-servizio', 'elettrico', 6),
+('KL789MN', 300, 50.00, 20.00, 'in-servizio', 'tradizionale', 6),
+('OP012QR', 125, 50.00, 20.00, 'dismesso', 'elettrico', 6),
 -- Torino
-('ST345UV', 150, 50.00, 20.00, 'disponibile', 'tradizionale', 7),
-('WX678YZ', 50, 50.00, 20.00, 'disponibile', 'elettrico', 7),
+('ST345UV', 150, 50.00, 20.00, 'in-servizio', 'tradizionale', 7),
+('WX678YZ', 50, 50.00, 20.00, 'in-servizio', 'elettrico', 7),
 ('AB901CD', 300, 50.00, 20.00, 'manutenzione', 'tradizionale', 7);
 
 -- Inserimento Accessori (divisi tra Optional e Servizi Assicurativi)
@@ -115,7 +115,7 @@ INSERT INTO Prenotazioni (dataRitiro, dataConsegna, costoTotale, clienteRegistra
 ('2025-04-10', '2025-04-14', 98.00, 18, 'KL789MN'); -- 4 giorni bassa + accessori
 
 -- Inserimento Prenotazioni_Accessori (mix di optional e servizi assicurativi)
-IINSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
+INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
 -- Prenotazione 1 (Luca Ferrari - 2 giorni bassa stagione)
 (1, 1), -- Casco integrale
 (1, 2), -- Bauletto posteriore
