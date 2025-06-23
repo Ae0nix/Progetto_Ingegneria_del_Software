@@ -15,6 +15,7 @@
 </div>
 
 <div class="container">
+  <!-- Logo in cima -->
   <div class="homepage-logo">
     <img th:src="@{/logo.png}" alt="Logo">
   </div>
@@ -22,20 +23,13 @@
   <!-- Form unificato per ricerca con tutti i parametri -->
   <form method="GET" action="/ricerca" class="search-form">
 
-    <!-- Filtri Location e Dates -->
-    <div class="filters-container">
-      <div class="filter-group">
-        <label for="location-select">Location</label>
-        <select id="location-select" name="localita" class="filter-dropdown" required>
-          <option value="">Seleziona località</option>
-          <option value="Roma">Roma</option>
-          <option value="Milano">Milano</option>
-          <option value="Napoli">Napoli</option>
-          <option value="Torino">Torino</option>
-          <option value="Firenze">Firenze</option>
-        </select>
-      </div>
+    <!-- Barra di ricerca sotto il logo -->
+    <div class="search-box">
+      <input type="text" name="localita" placeholder="Inserisci il nome di una città..." required>
+    </div>
 
+    <!-- Filtri Date sotto la barra di ricerca -->
+    <div class="filters-container">
       <div class="filter-group">
         <label for="data-ritiro">Data Ritiro</label>
         <input type="date" id="data-ritiro" name="dataRitiro" class="filter-dropdown" required>

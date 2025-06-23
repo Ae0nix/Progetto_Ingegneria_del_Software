@@ -153,11 +153,10 @@ body {
 .filters-container {
     display: flex;
     justify-content: center;
-    gap: 40px; /* Aumentato da 25px a 40px */
+    gap: 90px; /* Aumentato da 25px a 40px */
     margin-bottom: 40px;
     width: 100%;
     flex-wrap: nowrap;
-    padding: 0 20px;
 }
 
 .filter-group {
@@ -184,7 +183,7 @@ body {
 /* Stili unificati per tutti i campi filtro */
 .filter-dropdown,
 input[type="date"] {
-    width: 80%;
+    width: 100%;
     padding: 12px 18px;
     border: none;
     border-radius: 20px;
