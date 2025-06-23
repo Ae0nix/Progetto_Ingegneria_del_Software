@@ -25,10 +25,13 @@
                             <input type="checkbox" name="accessori" th:value="${acc.id}"
                                    style="accent-color:#0099d5; width:20px; height:20px; margin-right:12px;" />
                             <span style="font-weight:600; color:#333;" th:text="${acc.descrizione}">Accessorio</span>
-                            <span style="color:#0099d5; font-weight:600; margin-left:5px;"
-                                  th:text="|(${#numbers.formatDecimal(acc.prezzo, 1, 2)} €)|">(3.50 €)</span>
-                            <span th:if="${acc.tipo}" style="font-style:italic; color:#666; margin-left:6px;">
-                                - <span th:text="${acc.tipo}">Tipo</span>
+                            <span style="margin-left:5px; white-space:nowrap;">
+                                <span style="color:#0099d5; font-weight:600;">
+                                    (<span th:text="${#numbers.formatDecimal(acc.prezzo, 1, 2)}">3.50</span> €)
+                                </span>
+                                <span th:if="${acc.tipo}" style="font-style:italic; color:#666;">
+                                    - <span th:text="${acc.tipo}">Tipo</span>
+                                </span>
                             </span>
                         </label>
                     </li>

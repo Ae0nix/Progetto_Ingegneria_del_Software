@@ -42,16 +42,16 @@ public class BClienteRegistrato {
             return "conferma-prenotazione";
         } catch (OperationException e) {
             model.addAttribute("error", e.getMessage());
-            return "fragments/errore-popup :: errorePopupContent";
+            return "";
         }
     }
 
-
+/*
     @GetMapping("/confermaPrenotazione")
     public String confermaPrenotazione(Model model) {
 
 
     }
-
+*/
 }
 

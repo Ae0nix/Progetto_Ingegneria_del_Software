@@ -16,10 +16,11 @@ import java.util.List;
 
 public class GestioneSistemaPrenotazione {
     private static GestioneSistemaPrenotazione gsp = null;
+    private final PrenotazioneControl prenotazioneControl;
 
-
-    protected GestioneSistemaPrenotazione(){}
-
+    protected GestioneSistemaPrenotazione(){
+        this.prenotazioneControl = new PrenotazioneControl();
+    }
 
     private class PrenotazioneControl{
 
@@ -44,41 +45,11 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-
-
-
     public static GestioneSistemaPrenotazione getInstance(){
         if (gsp==null)
             gsp=new GestioneSistemaPrenotazione();
         return gsp;
     }
-
-    /*
-    public int registraScooter(String targa, int cilindrata, float prezzoPerGiornoNoleggioAltaStagione, float prezzoPerGiornoNoleggioBassaStagione, String tipologia, Agenzia agenzia){
-
-        if (!isTargaValida(targa)) {
-            System.out.println("Targa non valida. Inserire una targa conforme al formato europeo (es. AA123BB)");
-            return 1;
-        }
-
-
-        //registrazione su DB dello scooter attraverso il DAO e return 0 se non si sono verificati errori, 1 altrimenti
-    }
-
-    public int modificaStatoScooter(String targaScooter, String stato){
-        if(stato!="in-servizio" || stato!="dismesso") return 1;
-        else{
-            //modifica stato dello scooter sul database
-        }
-
-    }
-
-    public int registrazioneCliente(String nome, String cognome, String dataDiNascita, String email, String password){
-
-        ClienteRegistrato clienteRegistrato=new ClienteRegistrato(nome,cognome,dataDiNascita,email,password);
-
-        //registrazione su DB del cliente
-    }*/
 
     public OpzioniPrenotazioneResult visualizzaOpzioniDiPrenotazioneCosti(String targaScooter) throws OperationException {
         try {
@@ -117,11 +88,8 @@ public class GestioneSistemaPrenotazione {
                 throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
             }
 
-            PrenotazioneControl pc = new PrenotazioneControl();
-            pc.creaPrenotazione(dataRitiro,dataConsegna,cr,s);
-
-            Prenotazione eP = pc.getPrenotazioneInCorso();
-
+            this.prenotazioneControl.creaPrenotazione(dataRitiro,dataConsegna,cr,s);
+            Prenotazione eP = this.prenotazioneControl.getPrenotazioneInCorso();
 
             List<Accessorio> acc=new ArrayList<>();
             for(int id:accId){
@@ -141,24 +109,30 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-    public Prenotazione savePrenotazione(Prenotazione prenotazione) throws OperationException {
+    public String savePrenotazione() throws OperationException {
         try {
-            PrenotazioneDAO.createPrenotazione(prenotazione);
+            Prenotazione eP=this.prenotazioneControl.getPrenotazioneInCorso();
+            PrenotazioneDAO.createPrenotazione(eP);
 
-            int idPrenotazione=prenotazione.getId();
-            List<Accessorio> acc=prenotazione.getAccessori();
+            int idPrenotazione=eP.getId();
+            List<Accessorio> acc=eP.getAccessori();
 
             for (Accessorio a:acc){
                 PrenotazioneAccessorioDAO.createPrenotazioneAccessorio(idPrenotazione,a.getId());
             }
 
-            return prenotazione;
+            return "La prenotazione è avvenuta con successo";
         } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
         }
     }
 
+    public void annullaPrenotazione() throws OperationException {
+        this.prenotazioneControl.destroyPrenotazione();
+    }
+
     public List<Scooter> ricercaScooter(String localita, String dataRitiro, String dataConsegna) throws OperationException {
+        validaIntervalloDate(dataRitiro, dataConsegna);
         try {
             return ScooterDAO.readScooter(localita, dataRitiro, dataConsegna);
         } catch (DAOException | DBConnectionException e) {
@@ -206,14 +180,18 @@ public class GestioneSistemaPrenotazione {
         return !giorno.isBefore(inizioAlta) && !giorno.isAfter(fineAlta);
     }
 
-    private static boolean isTargaValida(String targa) {
-        if (targa == null) return false;
-
-        // Rimuove spazi o trattini per semplificare la validazione
-        String normalizzata = targa.replaceAll("[-\\s]", "").toUpperCase();
-
-        // Regola generica: 2 lettere, 3 cifre, 2 lettere
-        return normalizzata.matches("^[A-Z]{2}[0-9]{3}[A-Z]{2}$");
+    private void validaIntervalloDate(String dataRitiro, String dataConsegna) throws OperationException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate ritiro, consegna;
+        try {
+            ritiro = LocalDate.parse(dataRitiro, formatter);
+            consegna = LocalDate.parse(dataConsegna, formatter);
+        } catch (Exception e) {
+            throw new OperationException("Formato data non valido (deve essere yyyy-MM-dd).");
+        }
+        if (ritiro.isAfter(consegna)) {
+            throw new OperationException("la data di ritiro deve essere precedente o uguale alla data di consegna.");
+        }
     }
 
 }
