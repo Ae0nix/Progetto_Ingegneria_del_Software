@@ -46,12 +46,18 @@ public class BClienteRegistrato {
         }
     }
 
-/*
     @GetMapping("/confermaPrenotazione")
     public String confermaPrenotazione(Model model) {
+        try {
+            String messaggio = gestioneSistema.savePrenotazione();
 
+            model.addAttribute("success", messaggio);
 
+            return "prenotazione-successo"; // nome della pagina di esito/successo che vuoi mostrare
+        } catch (OperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error"; // nome della pagina di errore
+        }
     }
-*/
 }
 

@@ -7,6 +7,7 @@ import exception.OperationException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PrenotazioneDAO {
@@ -15,10 +16,10 @@ public class PrenotazioneDAO {
         try {
             Connection conn = DBManager.getConnection();
 
-            String query = "INSERT INTO Prenotazioni VALUES (?, ?, ?, ?, ?);"; //l'id viene generato ad autoincremento dal database
+            String query = "INSERT INTO Prenotazioni(`dataRitiro`, `dataConsegna`, `costoTotale`, `clienteRegistratoId`, `scooterTarga`) VALUES (?, ?, ?, ?, ?);"; //l'id viene generato ad autoincremento dal database
 
             try {
-                PreparedStatement ps = conn.prepareStatement(query);
+                PreparedStatement ps = conn.prepareStatement(query, java.sql.Statement.RETURN_GENERATED_KEYS);
 
                 ps.setString(1, prenotazione.getDataRitiro());
                 ps.setString(2, prenotazione.getDataConsegna());
@@ -27,6 +28,14 @@ public class PrenotazioneDAO {
                 ps.setString(5,prenotazione.getScooterTarga());
 
                 ps.executeUpdate();
+
+                try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        return generatedKeys.getInt(1); // <-- QUESTO È L'ID GENERATO
+                    } else {
+                        throw new DAOException("Inserimento prenotazione riuscito ma nessun ID generato ottenuto.");
+                    }
+                }
             } catch (SQLException e) {
                 throw new DAOException("Errore scrittura Prenotazione");
             }
@@ -36,7 +45,6 @@ public class PrenotazioneDAO {
         } catch (SQLException e) {
             throw new DBConnectionException("Errore connessione al database");
         }
-        return 0;
     }
 
     public static Prenotazione readPrenotazione(){

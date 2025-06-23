@@ -112,9 +112,8 @@ public class GestioneSistemaPrenotazione {
     public String savePrenotazione() throws OperationException {
         try {
             Prenotazione eP=this.prenotazioneControl.getPrenotazioneInCorso();
-            PrenotazioneDAO.createPrenotazione(eP);
 
-            int idPrenotazione=eP.getId();
+            int idPrenotazione=PrenotazioneDAO.createPrenotazione(eP);
             List<Accessorio> acc=eP.getAccessori();
 
             for (Accessorio a:acc){

@@ -25,7 +25,8 @@ public class PrenotazioneAccessorioDAO {
 
                 ps.executeUpdate();
             } catch (SQLException e) {
-                throw new DAOException("Errore scrittura Prenotazione");
+                e.printStackTrace();
+                throw new DAOException("Errore scrittura associazione prenotazione-accessorio");
             }
             finally {
                 DBManager.closeConnection();
