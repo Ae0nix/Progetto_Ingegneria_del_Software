@@ -17,6 +17,36 @@ import java.util.List;
 public class GestioneSistemaPrenotazione {
     private static GestioneSistemaPrenotazione gsp = null;
 
+
+    protected GestioneSistemaPrenotazione(){}
+
+
+    private class PrenotazioneControl{
+
+        private Prenotazione prenotazioneInCorso;
+
+        private void creaPrenotazione(String dataRitiro, String dataConsegna, ClienteRegistrato clienteRegistrato, Scooter scooter){
+            this.prenotazioneInCorso = new Prenotazione(dataRitiro, dataConsegna, clienteRegistrato, scooter);
+        }
+
+        public String destroyPrenotazione() throws OperationException {
+            if (prenotazioneInCorso == null) {
+                throw new OperationException("Nessuna prenotazione da annullare.");
+            }
+
+            prenotazioneInCorso = null;        // distruzione vera (gestita nel Control)
+
+            return "Prenotazione annullata.";
+        }
+
+        public Prenotazione getPrenotazioneInCorso() {
+            return prenotazioneInCorso;
+        }
+    }
+
+
+
+
     public static GestioneSistemaPrenotazione getInstance(){
         if (gsp==null)
             gsp=new GestioneSistemaPrenotazione();
@@ -87,7 +117,11 @@ public class GestioneSistemaPrenotazione {
                 throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
             }
 
-            Prenotazione eP=new Prenotazione(dataRitiro,dataConsegna,cr,s);
+            PrenotazioneControl pc = new PrenotazioneControl();
+            pc.creaPrenotazione(dataRitiro,dataConsegna,cr,s);
+
+            Prenotazione eP = pc.getPrenotazioneInCorso();
+
 
             List<Accessorio> acc=new ArrayList<>();
             for(int id:accId){
@@ -100,6 +134,7 @@ public class GestioneSistemaPrenotazione {
             eP.setAccessori(acc);
             float costo=calcoloCostoPrenotazione(eP);
             eP.setCostoTotale(costo);
+
             return eP;
         } catch (DBConnectionException | DAOException e) {
             throw new OperationException(e.getMessage());

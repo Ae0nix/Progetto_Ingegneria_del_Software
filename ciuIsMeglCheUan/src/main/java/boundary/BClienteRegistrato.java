@@ -37,11 +37,20 @@ public class BClienteRegistrato {
             // A questo punto puoi aggiungere la prenotazione al model e andare a una pagina di conferma
             model.addAttribute("prenotazione", prenotazione);
 
+
+
             return "conferma-prenotazione";
         } catch (OperationException e) {
             model.addAttribute("error", e.getMessage());
             return "fragments/errore-popup :: errorePopupContent";
         }
+    }
+
+
+    @GetMapping("/confermaPrenotazione")
+    public String confermaPrenotazione(Model model) {
+
+
     }
 
 }
