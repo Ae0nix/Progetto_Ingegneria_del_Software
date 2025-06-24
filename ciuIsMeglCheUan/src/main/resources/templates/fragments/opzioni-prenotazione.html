@@ -45,6 +45,14 @@
                        style="width:100%; padding: 12px 18px; border-radius: 20px; border: 1px solid #0099d5;
                               background: rgba(255,255,255,0.95); font-size:15px; margin-bottom: 8px; box-sizing: border-box;" />
             </div>
+            <div style="margin-top:12px;">
+                <label for="passwordUtente" style="font-weight:600; color:#666; margin-bottom: 6px; display:block;">
+                    Password:
+                </label>
+                <input id="passwordUtente" name="password" type="password" required placeholder="Inserisci la tua password"
+                       style="width:100%; padding: 12px 18px; border-radius: 20px; border: 1px solid #0099d5;
+                              background: rgba(255,255,255,0.95); font-size:15px; margin-bottom: 8px; box-sizing: border-box;" />
+            </div>
             <!-- Hidden fields for targa, dataRitiro, dataConsegna -->
             <input type="hidden" name="targa" th:value="${scooter.targa}" />
             <input type="hidden" name="dataRitiro" th:value="${dataRitiro}" />

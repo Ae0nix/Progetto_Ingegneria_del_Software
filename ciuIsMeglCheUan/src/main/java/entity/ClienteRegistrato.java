@@ -36,4 +36,8 @@ public class ClienteRegistrato {
     public String getEmail() {
         return email;
     }
+
+    public String getPassword() {
+        return password;
+    }
 }

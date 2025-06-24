@@ -74,7 +74,8 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-    public Prenotazione selezioneAccessori(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String targa) throws OperationException {
+    public Prenotazione selezioneAccessori(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String password, String targa) throws OperationException {
+        validaIntervalloDate(dataRitiro, dataConsegna);
         try {
             Scooter s=ScooterDAO.readScooter(targa);
 
@@ -82,29 +83,44 @@ public class GestioneSistemaPrenotazione {
                 throw new OperationException("Scooter non trovato");
             }
 
-            ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
-
-            if(cr==null) {
-                throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
-            }
+            ClienteRegistrato cr=autenticazioneUtente(email,password);
 
             this.prenotazioneControl.creaPrenotazione(dataRitiro,dataConsegna,cr,s);
             Prenotazione eP = this.prenotazioneControl.getPrenotazioneInCorso();
 
-            List<Accessorio> acc=new ArrayList<>();
-            for(int id:accId){
-                Accessorio a=AccessorioDAO.readAccessorio(id);
-                if (a != null) {
-                    acc.add(a);
+            if(!accId.isEmpty()) {
+                List<Accessorio> acc=new ArrayList<>();
+                for(int id:accId){
+                    Accessorio a=AccessorioDAO.readAccessorio(id);
+                    if (a != null) {
+                        acc.add(a);
+                    }
                 }
+                eP.setAccessori(acc);
             }
 
-            eP.setAccessori(acc);
             float costo=calcoloCostoPrenotazione(eP);
             eP.setCostoTotale(costo);
 
             return eP;
         } catch (DBConnectionException | DAOException e) {
+            throw new OperationException(e.getMessage());
+        }
+    }
+
+    public ClienteRegistrato autenticazioneUtente(String email, String password) throws OperationException {
+        try{
+        ClienteRegistrato cr=ClienteRegistratoDAO.readClienteRegistrato(email);
+
+        if(cr==null) {
+            throw new OperationException("È richiesta la registrazione per effettuare una prenotazione");
+        }
+
+        if(!cr.getPassword().equals(password)) {
+            throw new OperationException("Credenziali errate");
+        }
+        return cr;
+        } catch (DAOException | DBConnectionException e) {
             throw new OperationException(e.getMessage());
         }
     }
@@ -150,7 +166,7 @@ public class GestioneSistemaPrenotazione {
         // Recupera scooter e date
         Scooter scooter = prenotazione.getScooter();
 
-        // CORRETTO formato yyyy-MM-dd
+        // Il formato corretto è yyyy-MM-dd
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate ritiro = LocalDate.parse(prenotazione.getDataRitiro(), formatter);
         LocalDate consegna = LocalDate.parse(prenotazione.getDataConsegna(), formatter);
@@ -193,5 +209,7 @@ public class GestioneSistemaPrenotazione {
             throw new OperationException("la data di ritiro deve essere precedente o uguale alla data di consegna.");
         }
     }
+
+
 
 }
