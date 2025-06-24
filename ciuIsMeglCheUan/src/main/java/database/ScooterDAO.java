@@ -64,14 +64,14 @@ public class ScooterDAO {
         try {
             Connection conn=DBManager.getConnection();
 
-            String query="SELECT s.* FROM Scooter s JOIN Agenzie a On s.agenziaId=a.Id JOIN Prenotazioni p ON p.scooterTarga=s.targa WHERE a.località=? AND s.stato = 'in-servizio' AND (p.id IS NULL OR (p.dataConsegna <= ? OR p.dataRitiro >= ?))";
+            String query="SELECT s.* FROM Scooter s JOIN Agenzie a On s.agenziaId=a.Id LEFT JOIN Prenotazioni p ON p.scooterTarga = s.targa AND p.dataRitiro < ? AND p.dataConsegna >= ? WHERE a.località=? AND s.stato = 'in-servizio' AND p.id IS NULL";
 
             try {
                 PreparedStatement ps= conn.prepareStatement(query);
 
-                ps.setString(1,localita);
+                ps.setString(1,dataConsegna);
                 ps.setString(2,dataRitiro);
-                ps.setString(3,dataConsegna);
+                ps.setString(3,localita);
 
                 ResultSet rs=ps.executeQuery();
 
