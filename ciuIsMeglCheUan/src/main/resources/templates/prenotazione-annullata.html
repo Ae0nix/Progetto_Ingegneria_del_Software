@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it" class="no-scroll">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prenotazione Annullata - CiuIsMeglCheUan</title>
+  <link rel="stylesheet" th:href="@{/prenotazione-annullata.css}">
+</head>
+<body>
+<!-- Navbar trasparente -->
+<div class="top-bar">
+  <div class="auth-buttons">
+    <a href="/home" class="btn btn-register">Home</a>
+  </div>
+</div>
+<div class="container">
+  <div class="homepage-logo">
+    <img th:src="@{/logo.png}" alt="Logo">
+  </div>
+
+  <!-- Container principale -->
+  <div class="cancellation-container">
+    <!-- Icona di annullamento -->
+    <div class="cancellation-icon">
+      ✕
+    </div>
+
+    <!-- Messaggio principale -->
+    <h1 class="cancellation-title">Prenotazione Annullata</h1>
+
+    <!-- Messaggio aggiuntivo -->
+    <p class="cancellation-message" th:text="${message}">
+      La tua prenotazione è stata annullata.
+    </p>
+
+    <!-- Pulsanti di azione -->
+    <div class="btns-row">
+      <a href="/" class="btn-action">🏠 Torna alla Home</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

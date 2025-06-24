@@ -59,5 +59,19 @@ public class BClienteRegistrato {
             return "error"; // nome della pagina di errore
         }
     }
+
+    @GetMapping("/annullaPrenotazione")
+    public String annullaPrenotazione(Model model) {
+        try {
+            String messaggio = gestioneSistema.annullaPrenotazione();
+
+            model.addAttribute("message", messaggio);
+
+            return "prenotazione-annullata";
+        } catch (OperationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
+    }
 }
 

@@ -126,8 +126,9 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
-    public void annullaPrenotazione() throws OperationException {
+    public String annullaPrenotazione() throws OperationException {
         this.prenotazioneControl.destroyPrenotazione();
+        return "La tua prenotazione è stata annullata";
     }
 
     public List<Scooter> ricercaScooter(String localita, String dataRitiro, String dataConsegna) throws OperationException {

@@ -30,7 +30,7 @@
                                     (<span th:text="${#numbers.formatDecimal(acc.prezzo, 1, 2)}">3.50</span> €)
                                 </span>
                                 <span th:if="${acc.tipo}" style="font-style:italic; color:#666;">
-                                    - <span th:text="${acc.tipo}">Tipo</span>
+                                    - <span th:text="${#strings.replace(acc.tipo, '_', ' ')}">Tipo</span>
                                 </span>
                             </span>
                         </label>

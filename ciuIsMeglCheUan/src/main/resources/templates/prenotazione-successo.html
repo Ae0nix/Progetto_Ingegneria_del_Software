@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" class="no-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,24 +14,31 @@
     </div>
 </div>
 
-<!-- Container principale -->
-<div class="success-container">
-    <!-- Icona di successo -->
-    <div class="success-icon">
-        ✓
+
+<div class="container">
+    <div class="homepage-logo">
+        <img th:src="@{/logo.png}" alt="Logo">
     </div>
 
-    <!-- Messaggio principale -->
-    <h1 class="success-title">Prenotazione avvenuta con successo</h1>
+    <!-- Container principale -->
+    <div class="success-container">
+        <!-- Icona di successo -->
+        <div class="success-icon">
+            ✓
+        </div>
 
-    <!-- Messaggio aggiuntivo -->
-    <p class="success-message">
-        La tua prenotazione è stata registrata correttamente.
-    </p>
+        <!-- Messaggio principale -->
+        <h1 class="success-title">Prenotazione avvenuta con successo</h1>
 
-    <!-- Pulsanti di azione -->
-    <div class="btns-row">
-        <a href="/" class="btn-action">Torna alla Home</a>
+        <!-- Messaggio aggiuntivo -->
+        <p class="success-message">
+            La tua prenotazione è stata registrata correttamente.
+        </p>
+
+        <!-- Pulsanti di azione -->
+        <div class="btns-row">
+            <a href="/" class="btn-action">🏠 Torna alla Home</a>
+        </div>
     </div>
 </div>
 </body>

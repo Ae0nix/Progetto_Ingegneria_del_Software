@@ -2,22 +2,6 @@
     overflow: hidden;
 }
 
-body {
-    background: linear-gradient(135deg, #0099d5 0%, #007ab8 100%);
-    min-height: 100vh;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 70px;
-}
-
-.container {
-    max-width: 600px;
-    margin: 60px auto 0 auto;
-    text-align: center;
-    animation: fadeInUp 0.8s ease-out;
-}
-
 .homepage-logo {
     margin-bottom: 30px;
     text-align: center;
@@ -32,6 +16,22 @@ body {
 
 .homepage-logo img:hover {
     transform: scale(1.05);
+}
+
+body {
+    background: linear-gradient(135deg, #0099d5 0%, #007ab8 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 120px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 60px auto 0 auto;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 /* Navbar trasparente */
@@ -69,6 +69,19 @@ body {
     overflow: hidden;
 }
 
+.btn-login {
+    color: #dc3545;
+    border-color: white;
+    background-color: white;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.btn-login:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
+}
+
 .btn-register {
     color: white;
     background: linear-gradient(45deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
@@ -83,8 +96,8 @@ body {
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* Container principale del successo */
-.success-container {
+/* Container principale dell'annullamento */
+.cancellation-container {
     max-width: 600px;
     margin: 0 auto;
     background: rgba(255, 255, 255, 0.97);
@@ -107,17 +120,17 @@ body {
     }
 }
 
-/* Icona di successo */
-.success-icon {
+/* Icona di annullamento */
+.cancellation-icon {
     font-size: 80px;
-    color: #28a745;
+    color: #dc3545;
     margin-bottom: 25px;
     font-weight: bold;
-    text-shadow: 0 2px 10px rgba(40, 167, 69, 0.3);
-    animation: checkmarkPulse 0.6s ease-out 0.2s;
+    text-shadow: 0 2px 10px rgba(220, 53, 69, 0.3);
+    animation: cancelPulse 0.6s ease-out 0.2s;
 }
 
-@keyframes checkmarkPulse {
+@keyframes cancelPulse {
     0% {
         transform: scale(0);
         opacity: 0;
@@ -132,16 +145,16 @@ body {
 }
 
 /* Titolo principale */
-.success-title {
-    color: #0099d5;
+.cancellation-title {
+    color: #dc3545;
     font-size: 2.2rem;
     font-weight: 700;
     margin-bottom: 20px;
     letter-spacing: 0.5px;
 }
 
-/* Messaggio di successo */
-.success-message {
+/* Messaggio di annullamento */
+.cancellation-message {
     color: #333;
     font-size: 1.1rem;
     font-weight: 500;
@@ -160,14 +173,14 @@ body {
 
 .btn-action {
     display: inline-block;
-    background: linear-gradient(45deg, #0099d5, #007ab8);
+    background: linear-gradient(45deg, #dc3545, #c82333);
     color: white;
     padding: 14px 32px;
     border-radius: 25px;
     font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(0, 153, 213, 0.28);
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.28);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
     cursor: pointer;
@@ -176,22 +189,22 @@ body {
 
 .btn-action:hover {
     transform: translateY(-2px);
-    box-shadow: 0 12px 25px rgba(0, 153, 213, 0.4);
+    box-shadow: 0 12px 25px rgba(220, 53, 69, 0.4);
     color: white;
     text-decoration: none;
 }
 
 .btn-secondary {
     background: rgba(255, 255, 255, 0.2);
-    color: #0099d5;
-    border: 2px solid #0099d5;
-    box-shadow: 0 4px 15px rgba(0, 153, 213, 0.2);
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
 }
 
 .btn-secondary:hover {
-    background: #0099d5;
+    background: #dc3545;
     color: white;
-    box-shadow: 0 8px 20px rgba(0, 153, 213, 0.3);
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
 }
 
 /* Responsive design */
@@ -200,16 +213,16 @@ body {
         margin: 20px auto 0 auto;
     }
 
-    .success-container {
+    .cancellation-container {
         margin: 0 20px;
         padding: 40px 25px 30px 25px;
     }
 
-    .success-title {
+    .cancellation-title {
         font-size: 1.8rem;
     }
 
-    .success-message {
+    .cancellation-message {
         font-size: 1rem;
     }
 
@@ -230,16 +243,16 @@ body {
         margin: 10px auto 0 auto;
     }
 
-    .success-container {
+    .cancellation-container {
         margin: 0 12px;
         padding: 28px 12px 22px 12px;
     }
 
-    .success-icon {
+    .cancellation-icon {
         font-size: 60px;
     }
 
-    .success-title {
+    .cancellation-title {
         font-size: 1.5rem;
     }
 
