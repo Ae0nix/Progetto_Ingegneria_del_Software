@@ -150,6 +150,7 @@ public class GestioneSistemaPrenotazione {
     }
 
     public List<Scooter> ricercaScooter(String localita, String dataRitiro, String dataConsegna) throws OperationException {
+        isValidaLocalita(localita);
         validaIntervalloDate(dataRitiro, dataConsegna);
         try {
             return ScooterDAO.readScooter(localita, dataRitiro, dataConsegna);
@@ -224,4 +225,19 @@ public class GestioneSistemaPrenotazione {
         }
     }
 
+    public void isValidaLocalita(String localita) throws OperationException {
+        if (localita == null || localita.trim().isEmpty()) {
+            throw new OperationException("La località non può essere vuota.");
+        }
+        if (localita.length() > 100) {
+            throw new OperationException("La località non può superare i 100 caratteri.");
+        }
+        if (localita.matches(".*\\d.*")) {
+            throw new OperationException("La località non può contenere numeri.");
+        }
+        // Consenti lettere (anche accentate), spazi e apostrofi
+        if (!localita.matches("^[a-zA-ZàèéìòùÀÈÉÌÒÙ' ]+$")) {
+            throw new OperationException("La località può contenere solo lettere, spazi e apostrofi.");
+        }
+    }
 }
