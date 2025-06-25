@@ -52,6 +52,7 @@ public class GestioneSistemaPrenotazione {
     }
 
     public OpzioniPrenotazioneResult visualizzaOpzioniDiPrenotazioneCosti(String targaScooter) throws OperationException {
+        isTargaValida(targaScooter);
         try {
             Scooter s=ScooterDAO.readScooter(targaScooter);
 
@@ -75,6 +76,7 @@ public class GestioneSistemaPrenotazione {
     }
 
     public Prenotazione selezioneAccessori(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String password, String targa) throws OperationException {
+        isTargaValida(targa);
         validaIntervalloDate(dataRitiro, dataConsegna);
         try {
             Scooter s=ScooterDAO.readScooter(targa);
@@ -94,7 +96,7 @@ public class GestioneSistemaPrenotazione {
                     Accessorio a=AccessorioDAO.readAccessorio(id);
                     if (a != null) {
                         acc.add(a);
-                    }
+                    }else throw new OperationException("Accessorio non trovato");
                 }
                 eP.setAccessori(acc);
             }
@@ -206,10 +208,20 @@ public class GestioneSistemaPrenotazione {
             throw new OperationException("Formato data non valido (deve essere yyyy-MM-dd).");
         }
         if (ritiro.isAfter(consegna)) {
-            throw new OperationException("la data di ritiro deve essere precedente o uguale alla data di consegna.");
+            throw new OperationException("La data di ritiro deve essere precedente o uguale alla data di consegna.");
         }
     }
 
+    private void isTargaValida(String targa) throws OperationException {
+        if (targa == null) throw new OperationException("Targa non valida");
 
+        // Rimuove spazi o trattini per semplificare la validazione
+        String normalizzata = targa.replaceAll("[-\\s]", "").toUpperCase();
+
+        // Regola generica: 2 lettere, 3 cifre, 2 lettere
+        if(!normalizzata.matches("^[A-Z]{2}[0-9]{3}[A-Z]{2}$")){
+            throw new OperationException("Targa non valida");
+        }
+    }
 
 }
