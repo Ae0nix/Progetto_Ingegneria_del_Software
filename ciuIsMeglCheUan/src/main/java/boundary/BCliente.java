@@ -110,7 +110,7 @@ public class BCliente {
      * Endpoint per mostrare il form di ricerca
      * GET /cliente/ricerca-form
      */
-    @GetMapping("/home")
+    @GetMapping("/")
     public String mostraFormRicerca() {
         return "home";
     }
