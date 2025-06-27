@@ -1,4 +1,4 @@
-package application;
+package application.unit;
 
 import control.GestioneSistemaPrenotazione;
 import database.ScooterDAO;
@@ -15,9 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mockStatic;
 
 @SpringBootTest
-class CiuIsMeglCheUanApplicationTests {
+class RicercaScooterTest {
 
-    GestioneSistemaPrenotazione gsp=GestioneSistemaPrenotazione.getInstance();
+    private final GestioneSistemaPrenotazione gsp=GestioneSistemaPrenotazione.getInstance();
 
     @Test
     void testRicercaScooterLocalitaVuota() {
