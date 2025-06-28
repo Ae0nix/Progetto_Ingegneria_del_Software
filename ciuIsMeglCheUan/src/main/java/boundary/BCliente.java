@@ -21,9 +21,9 @@ public class BCliente {
 
     /**
      * Endpoint per la ricerca degli scooter disponibili (restituisce template Thymeleaf)
-     * GET /ricerca?localita=Roma&dataRitiro=01/06/2024&dataConsegna=05/06/2024
+     * GET /scooters?localita=Roma&dataRitiro=01/06/2024&dataConsegna=05/06/2024
      */
-    @GetMapping("/ricerca")
+    @GetMapping("/scooters")
     public String ricercaScooter(
             @RequestParam("localita") String localita,
             @RequestParam("dataRitiro") String dataRitiro,
@@ -73,7 +73,7 @@ public class BCliente {
     /**
      * Endpoint per visualizzare le opzioni di prenotazione e i costi di uno scooter.
      * Da visualizzare in popup (modal) nella pagina Thymeleaf.
-     * GET /opzioni-prenotazione?targa=ABC123
+     * GET /opzioniPrenotazione?targa=ABC123
      */
     @GetMapping("/opzioniPrenotazione")
     public String visualizzaOpzioniPrenotazione(
@@ -108,7 +108,7 @@ public class BCliente {
 
     /**
      * Endpoint per mostrare il form di ricerca
-     * GET /cliente/ricerca-form
+     * GET /
      */
     @GetMapping("/")
     public String mostraFormRicerca() {

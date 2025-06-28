@@ -18,7 +18,7 @@ public class BClienteRegistrato {
         this.gestioneSistema = GestioneSistemaPrenotazione.getInstance();
     }
 
-    @PostMapping("/selezioneAccessori")
+    @PostMapping("/prenotazione")
     public String selezioneAccessori(
             @RequestParam(required = false, name = "accessori") List<Integer> accessoriId,
             @RequestParam String dataRitiro,
@@ -28,12 +28,10 @@ public class BClienteRegistrato {
             @RequestParam String targa,
             Model model) {
         try {
-            // Chiama la funzione del controller di dominio (come da tua richiesta iniziale)
             Prenotazione prenotazione = gestioneSistema.selezioneAccessori(
                     accessoriId, dataRitiro, dataConsegna, email, password, targa
             );
 
-            // A questo punto puoi aggiungere la prenotazione al model e andare a una pagina di conferma
             model.addAttribute("prenotazione", prenotazione);
 
             return "conferma-prenotazione";

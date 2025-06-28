@@ -1,18 +1,19 @@
 package application.functional;
 
-import control.GestioneSistemaPrenotazione;
-import entity.Scooter;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.ResponseEntity;
 
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RicercaScooterFunctionalTest {
 
-    private final GestioneSistemaPrenotazione gsp=GestioneSistemaPrenotazione.getInstance();
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     @Test
     void functionalTestRicercaScooterInputValidi() {
@@ -27,12 +28,19 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        assertDoesNotThrow(() -> {
-            List<Scooter> scooterList = gsp.ricercaScooter(localita, dataRitiro, dataConsegna);
-            assertNotNull(scooterList);
-            assertFalse(scooterList.isEmpty(), "Il sistema deve mostrare gli scooter disponibili al cliente");
-        });
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+        Assertions.assertNotNull(response.getBody());
+
+        String body = response.getBody();
+        assertThat(body).doesNotContain("non sono stati trovati scooter disponibili");
+        assertThat(body).contains("Napoli");
     }
+
 
     @Test
     void functionalTestRicercaScooterLocalitàVuotaNulla() {
@@ -46,11 +54,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("località") && ex.getMessage().contains("non valida") ||
-                ex.getMessage().contains("località non può essere vuota"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("località non specificata") ||
+                        body.toLowerCase().contains("località non può essere vuota")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -65,11 +83,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("località") && ex.getMessage().contains("non valida") ||
-                ex.getMessage().contains("può contenere solo lettere"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("località non valida") ||
+                        body.toLowerCase().contains("può contenere solo lettere")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -84,18 +112,28 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("località") && ex.getMessage().contains("non valida") ||
-                ex.getMessage().contains("non può contenere numeri"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("località non valida") ||
+                        body.toLowerCase().contains("non può contenere numeri")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
     void functionalTestRicercaScooterStringaLocalitaLunghezzaMaggiore100Caratteri() {
         /* Test Case ID: 5
            Descrizione: Stringa località di lunghezza > 100 caratteri
-           Input: {Località: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...", DataRitiro: "2025-06-07", DataConsegna: "2025-06-10"}
+           Input: {Località: "aaaaaaaa... (101 caratteri)", DataRitiro: "2025-06-07", DataConsegna: "2025-06-10"}
            Output attesi: Error: stringa località non valida
         */
 
@@ -103,11 +141,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("località") && ex.getMessage().contains("non valida") ||
-                ex.getMessage().contains("non può superare i 100 caratteri"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("località non valida") ||
+                        body.toLowerCase().contains("non può superare i 100 caratteri")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -122,11 +170,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "07/06/2025";
         String dataConsegna = "2025-06-10";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("DataRitiro") && ex.getMessage().contains("formato non valido") ||
-                ex.getMessage().contains("Formato data non valido"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("dataritiro in formato non valido") ||
+                        body.toLowerCase().contains("formato data non valido")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -141,17 +199,27 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025/06/2025";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("DataConsegna") && ex.getMessage().contains("formato non valido") ||
-                ex.getMessage().contains("Formato data non valido"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("dataconsegna in formato non valido") ||
+                        body.toLowerCase().contains("formato data non valido")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
     void functionalTestRicercaScooterDataConsegnaPrecedenteADataRitiro() {
         /* Test Case ID: 8
-           Descrizione: Data in formato valido (gg/mm/aaaa), precedente a DataRitiro
+           Descrizione: Data in formato valido (aaaa-mm-gg), ma DataConsegna precedente a DataRitiro
            Input: {Località: "Napoli", DataRitiro: "2025-06-07", DataConsegna: "2025-06-05"}
            Output attesi: Error: DataConsegna precedente a DataRitiro
         */
@@ -160,11 +228,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-05";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("DataConsegna precedente a DataRitiro") ||
-                ex.getMessage().contains("data di ritiro deve essere precedente"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("dataconsegna precedente a dataritiro") ||
+                        body.toLowerCase().contains("data di ritiro deve essere precedente")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -179,11 +257,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "";
         String dataConsegna = "2025-06-05";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("DataRitiro mancante") ||
-                ex.getMessage().contains("Formato data non valido"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("data ritiro non specificata") ||
+                        body.toLowerCase().contains("formato data non valido")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -198,11 +286,21 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "";
 
-        Exception ex = assertThrows(Exception.class, () ->
-                gsp.ricercaScooter(localita, dataRitiro, dataConsegna)
-        );
-        assertTrue(ex.getMessage().contains("DataConsegna mancante") ||
-                ex.getMessage().contains("Formato data non valido"));
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("data consegna non specificata") ||
+                        body.toLowerCase().contains("formato data non valido")
+        ).isTrue();
+        assertThat(body).contains("Error");
     }
 
     @Test
@@ -217,11 +315,19 @@ public class RicercaScooterFunctionalTest {
         String dataRitiro = "2025-06-07";
         String dataConsegna = "2025-06-10";
 
-        assertDoesNotThrow(() -> {
-            List<Scooter> scooterList = gsp.ricercaScooter(localita, dataRitiro, dataConsegna);
-            assertNotNull(scooterList);
-            assertTrue(scooterList.isEmpty(),
-                    "Error: non sono stati trovati scooter disponibili per i criteri di ricerca selezionati");
-        });
+        String url = "/scooters?localita=" + localita
+                + "&dataRitiro=" + dataRitiro
+                + "&dataConsegna=" + dataConsegna;
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+
+        String body = response.getBody();
+        Assertions.assertNotNull(body);
+        assertThat(
+                body.toLowerCase().contains("non sono stati trovati scooter disponibili") ||
+                        body.toLowerCase().contains("criteri di ricerca selezionati")
+        ).isTrue();
     }
 }
