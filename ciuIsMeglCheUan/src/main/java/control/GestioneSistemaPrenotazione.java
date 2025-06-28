@@ -189,7 +189,7 @@ public class GestioneSistemaPrenotazione {
             this.prenotazioneControl.creaPrenotazione(dataRitiro,dataConsegna,cr,s);
             Prenotazione eP = this.prenotazioneControl.getPrenotazioneInCorso();
 
-            if(!accId.isEmpty()) {
+            if(accId!=null) {
                 List<Accessorio> acc=new ArrayList<>();
                 for(int id:accId){
                     Accessorio a=AccessorioDAO.readAccessorio(id);
@@ -327,8 +327,11 @@ public class GestioneSistemaPrenotazione {
     private float calcoloCostoPrenotazione(Prenotazione prenotazione) {
         float costo = 0;
         List<Accessorio> acc = prenotazione.getAccessori();
-        for (Accessorio a : acc) {
-            costo += a.getPrezzo();
+
+        if(acc!=null) {
+            for (Accessorio a : acc) {
+                costo += a.getPrezzo();
+            }
         }
 
         // Recupera scooter e date
