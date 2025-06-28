@@ -47,7 +47,7 @@ public class RicercaScooterFunctionalTest {
         /* Test Case ID: 2
            Descrizione: Stringa località vuota o nulla
            Input: {Località: "", DataRitiro: "2025-06-07", DataConsegna: "2025-06-10"}
-           Output attesi: Error: stringa località non valida
+           Output attesi: Error: stringa località non specificata
         */
 
         String localita = "";
@@ -105,7 +105,7 @@ public class RicercaScooterFunctionalTest {
         /* Test Case ID: 4
            Descrizione: Stringa località con numeri
            Input: {Località: "N4p0l1", DataRitiro: "2025-06-07", DataConsegna: "2025-06-10"}
-           Output attesi: Error: stringa località non valida
+           Output attesi: Error: stringa località non può contenere numeri
         */
 
         String localita = "N4p0l1";
@@ -134,7 +134,7 @@ public class RicercaScooterFunctionalTest {
         /* Test Case ID: 5
            Descrizione: Stringa località di lunghezza > 100 caratteri
            Input: {Località: "aaaaaaaa... (101 caratteri)", DataRitiro: "2025-06-07", DataConsegna: "2025-06-10"}
-           Output attesi: Error: stringa località non valida
+           Output attesi: Error: stringa località non può superare i 100 caratteri
         */
 
         String localita = "a".repeat(101);
