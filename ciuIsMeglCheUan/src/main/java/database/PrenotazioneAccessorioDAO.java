@@ -3,7 +3,6 @@ package database;
 import entity.Prenotazione;
 import exception.DAOException;
 import exception.DBConnectionException;
-import exception.OperationException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
