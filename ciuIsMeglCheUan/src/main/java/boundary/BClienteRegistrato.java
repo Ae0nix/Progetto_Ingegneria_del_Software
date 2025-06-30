@@ -73,7 +73,7 @@ public class BClienteRegistrato {
      * @throws OperationException se il cliente non è registrato o lo scooter non esiste
      */
     @PostMapping("/prenotazione")
-    public String selezioneAccessori(
+    public String prenotazioneScooter(
             @RequestParam(required = false, name = "accessori") List<Integer> accessoriId,
             @RequestParam String dataRitiro,
             @RequestParam String dataConsegna,
@@ -82,7 +82,7 @@ public class BClienteRegistrato {
             @RequestParam String targa,
             Model model) {
         try {
-            Prenotazione prenotazione = gestioneSistema.selezioneAccessori(
+            Prenotazione prenotazione = gestioneSistema.prenotazioneScooter(
                     accessoriId, dataRitiro, dataConsegna, email, password, targa
             );
 

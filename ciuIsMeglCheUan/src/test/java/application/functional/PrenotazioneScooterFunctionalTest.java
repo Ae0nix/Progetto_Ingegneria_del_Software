@@ -15,13 +15,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * Functional tests for the boundary BClienteRegistrato (selezione accessori/prenotazione).
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class SelezioneAccessoriFunctionalTest {
+public class PrenotazioneScooterFunctionalTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
 
     @Test
-    void functionalTestSelezioneAccessoriInputValidi() {
+    void functionalTestPrenotazioneScooterInputValidi() {
         /* Test Case ID: 1
          * Descrizione: Tutti input validi
          * Input: Targa, DataRitiro, DataConsegna, Accessori, Email, Password - tutti validi
@@ -47,7 +47,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriTargaVuota() {
+    void functionalTestPrenotazioneScooterTargaVuota() {
         /* Test Case ID: 2
          * Descrizione: Stringa targa vuota o nulla
          * Input: Targa vuota, altri parametri validi
@@ -74,7 +74,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriTargaFormatoErrato() {
+    void functionalTestPrenotazioneScooterTargaFormatoErrato() {
         /* Test Case ID: 3
          * Descrizione: Stringa targa con formato errato
          * Input: Targa con formato errato, altri parametri validi
@@ -100,7 +100,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriDataRitiroFormatoErrato() {
+    void functionalTestPrenotazioneScooterDataRitiroFormatoErrato() {
         /* Test Case ID: 4
          * Descrizione: DataRitiro con formato non valido
          * Input: DataRitiro in formato errato, altri parametri validi
@@ -127,7 +127,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriDataRitiroMancante() {
+    void functionalTestPrenotazioneScooterDataRitiroMancante() {
         /* Test Case ID: 5
          * Descrizione: DataRitiro mancante
          * Input: DataRitiro mancante, altri parametri validi
@@ -154,7 +154,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriDataConsegnaPrecedenteDataRitiro() {
+    void functionalTestPrenotazioneScooterDataConsegnaPrecedenteDataRitiro() {
         /* Test Case ID: 6
          * Descrizione: DataConsegna precedente a DataRitiro
          * Input: DataConsegna precedente a DataRitiro, altri parametri validi
@@ -180,7 +180,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriDataConsegnaFormatoErrato() {
+    void functionalTestPrenotazioneScooterDataConsegnaFormatoErrato() {
         /* Test Case ID: 7
          * Descrizione: DataConsegna con formato non valido
          * Input: DataConsegna in formato errato, altri parametri validi
@@ -207,7 +207,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriDataConsegnaMancante() {
+    void functionalTestPrenotazioneScooterDataConsegnaMancante() {
         /* Test Case ID: 8
          * Descrizione: DataConsegna mancante
          * Input: DataConsegna mancante, altri parametri validi
@@ -234,7 +234,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriListaAccessoriVuota() {
+    void functionalTestPrenotazioneScooterListaAccessoriVuota() {
         /* Test Case ID: 9
          * Descrizione: Lista accessori vuota
          * Input: Accessori non specificati, altri parametri validi
@@ -258,7 +258,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriListaConCaratteriNonNumerici() {
+    void functionalTestPrenotazioneScooterListaConCaratteriNonNumerici() {
         /* Test Case ID: 10
          * Descrizione: Lista con caratteri non numerici
          * Input: Accessori con valori non numerici, altri parametri validi
@@ -283,7 +283,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriEmailFormatoErrato() {
+    void functionalTestPrenotazioneScooterEmailFormatoErrato() {
         /* Test Case ID: 11
          * Descrizione: Stringa email con formato non valido
          * Input: Email non valida, altri parametri validi
@@ -310,7 +310,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriEmailVuota() {
+    void functionalTestPrenotazioneScooterEmailVuota() {
         /* Test Case ID: 12
          * Descrizione: Stringa email vuota o nulla
          * Input: Email vuota, altri parametri validi
@@ -337,7 +337,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriPasswordVuota() {
+    void functionalTestPrenotazioneScooterPasswordVuota() {
         /* Test Case ID: 13
          * Descrizione: Stringa password vuota o nulla
          * Input: Password vuota, altri parametri validi
@@ -364,7 +364,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriPasswordNonCorretta() {
+    void functionalTestPrenotazioneScooterPasswordNonCorretta() {
         /* Test Case ID: 14
          * Descrizione: Stringa password non corretta per l’email fornita
          * Input: Password errata, altri parametri validi
@@ -391,7 +391,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriTargaNonPresente() {
+    void functionalTestPrenotazioneScooterTargaNonPresente() {
         /* Test Case ID: 15
          * Descrizione: Targa non presente nel sistema
          * Input: Targa non registrata, altri parametri validi
@@ -418,7 +418,7 @@ public class SelezioneAccessoriFunctionalTest {
     }
 
     @Test
-    void functionalTestSelezioneAccessoriAccessoriNonEsistenti() {
+    void functionalTestPrenotazioneScooterAccessoriNonEsistenti() {
         /* Test Case ID: 16
          * Descrizione: Uno o più accessori non esistono nel sistema
          * Input: Accessori inesistenti, altri parametri validi

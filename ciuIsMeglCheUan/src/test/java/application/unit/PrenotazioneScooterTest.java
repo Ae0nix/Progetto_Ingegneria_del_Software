@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class SelezioneAccessoriTest {
+class PrenotazioneScooterTest {
 
     private final GestioneSistemaPrenotazione gsp = GestioneSistemaPrenotazione.getInstance();
 
@@ -112,7 +112,7 @@ class SelezioneAccessoriTest {
 
     // 7 - Targa di uno scooter non presente nel sistema
     @Test
-    void testSelezioneAccessoriScooterNonPresente() {
+    void testPrenotazioneScooterScooterNonPresente() {
         List<Integer> listaAccessori = List.of(1,2,3);
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -124,7 +124,7 @@ class SelezioneAccessoriTest {
             scooterMock.when(() -> ScooterDAO.readScooter(targa)).thenReturn(null);
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("Scooter non trovato", ex.getMessage());
         }
@@ -132,7 +132,7 @@ class SelezioneAccessoriTest {
 
     // 8 - Il cliente non è registrato nel sistema
     @Test
-    void testSelezioneAccessoriClienteNonRegistrato() {
+    void testPrenotazioneScooterClienteNonRegistrato() {
         List<Integer> listaAccessori = List.of(1,2,3);
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -144,7 +144,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(null);
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("È richiesta la registrazione per effettuare una prenotazione", ex.getMessage());
         }
@@ -152,7 +152,7 @@ class SelezioneAccessoriTest {
 
     // 9 - La password immessa è sbagliata
     @Test
-    void testSelezioneAccessoriPasswordErrata() {
+    void testPrenotazioneScooterPasswordErrata() {
         List<Integer> listaAccessori = List.of(1,2,3);
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -167,7 +167,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(fakeCliente);
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("Credenziali errate", ex.getMessage());
         }
@@ -175,7 +175,7 @@ class SelezioneAccessoriTest {
 
     // 10 - Errore database lettura cliente
     @Test
-    void testSelezioneAccessoriErroreDatabaseCliente() {
+    void testPrenotazioneScooterErroreDatabaseCliente() {
         List<Integer> listaAccessori = List.of(1,2,3);
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -187,7 +187,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenThrow(new DAOException("Errore lettura ClienteRegistrato"));
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("Errore lettura ClienteRegistrato", ex.getMessage());
         }
@@ -195,7 +195,7 @@ class SelezioneAccessoriTest {
 
     // 11 - Errore connessione database
     @Test
-    void testSelezioneAccessoriErroreConnessioneDatabase() {
+    void testPrenotazioneScooterErroreConnessioneDatabase() {
         List<Integer> listaAccessori = List.of(1,2,3);
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -207,7 +207,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenThrow(new DAOException("Errore connessione al database"));
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("Errore connessione al database", ex.getMessage());
         }
@@ -215,7 +215,7 @@ class SelezioneAccessoriTest {
 
     // 12 - Lista accessori nulla e alta stagione
     @Test
-    void testSelezioneAccessoriListaAccessoriNullAltaStagione() {
+    void testPrenotazioneScooterListaAccessoriNullAltaStagione() {
         List<Integer> listaAccessori = null;
         String dataRitiro = "2025-07-25"; // alta stagione
         String dataConsegna = "2025-07-26";
@@ -237,7 +237,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(fakeCliente);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }
@@ -245,7 +245,7 @@ class SelezioneAccessoriTest {
 
     // 13 - Lista accessori nulla e bassa stagione
     @Test
-    void testSelezioneAccessoriListaAccessoriNullBassaStagione() {
+    void testPrenotazioneScooterListaAccessoriNullBassaStagione() {
         List<Integer> listaAccessori = null;
         String dataRitiro = "2025-01-25"; // bassa stagione
         String dataConsegna = "2025-01-26";
@@ -267,7 +267,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(fakeCliente);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }
@@ -275,7 +275,7 @@ class SelezioneAccessoriTest {
 
     // 14 - Prenotazione corretta in alta stagione
     @Test
-    void testSelezioneAccessoriPrenotazioneCorrettaAltaStagione() {
+    void testPrenotazioneScooterPrenotazioneCorrettaAltaStagione() {
         List<Integer> listaAccessori = List.of(1);
         String dataRitiro = "2025-07-25";
         String dataConsegna = "2025-07-26";
@@ -301,7 +301,7 @@ class SelezioneAccessoriTest {
             accessorioMock.when(() -> AccessorioDAO.readAccessorio(1)).thenReturn(fakeAccessorio);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }
@@ -309,7 +309,7 @@ class SelezioneAccessoriTest {
 
     // 15 - Id di un accessorio non presente in database
     @Test
-    void testSelezioneAccessoriIdAccessorioNonPresente() {
+    void testPrenotazioneScooterIdAccessorioNonPresente() {
         List<Integer> listaAccessori = List.of(30);
         String dataRitiro = "2025-07-25";
         String dataConsegna = "2025-07-26";
@@ -333,7 +333,7 @@ class SelezioneAccessoriTest {
             accessorioMock.when(() -> AccessorioDAO.readAccessorio(30)).thenReturn(null);
 
             OperationException ex = assertThrows(OperationException.class, () ->
-                    gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
+                    gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa)
             );
             assertEquals("Accessorio non trovato", ex.getMessage());
         }
@@ -341,7 +341,7 @@ class SelezioneAccessoriTest {
 
     // 16 - Lista accessori vuota e bassa stagione
     @Test
-    void testSelezioneAccessoriListaAccessoriVuotaBassaStagione() {
+    void testPrenotazioneScooterListaAccessoriVuotaBassaStagione() {
         List<Integer> listaAccessori = Collections.emptyList();
         String dataRitiro = "2025-01-25";
         String dataConsegna = "2025-01-26";
@@ -363,14 +363,14 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(fakeCliente);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }
     }
 
     @Test
-    void testSelezioneAccessoriListaAccessoriVuotaAltaStagione() {
+    void testPrenotazioneScooterListaAccessoriVuotaAltaStagione() {
         List<Integer> listaAccessori = new ArrayList<>();
         String dataRitiro = "2025-07-25"; // alta stagione
         String dataConsegna = "2025-07-26"; // alta stagione
@@ -392,7 +392,7 @@ class SelezioneAccessoriTest {
             clienteMock.when(() -> ClienteRegistratoDAO.readClienteRegistrato(email)).thenReturn(fakeCliente);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }
@@ -400,7 +400,7 @@ class SelezioneAccessoriTest {
 
     // 18 - Prenotazione corretta in alta stagione con accessori presenti
     @Test
-    void testSelezioneAccessoriPrenotazioneCorrettaAltaStagioneConAccessoriPresenti() {
+    void testPrenotazioneScooterPrenotazioneCorrettaAltaStagioneConAccessoriPresenti() {
         List<Integer> listaAccessori = List.of(1);
         String dataRitiro = "2025-07-25"; // alta stagione
         String dataConsegna = "2025-07-26";
@@ -426,7 +426,7 @@ class SelezioneAccessoriTest {
             accessorioMock.when(() -> AccessorioDAO.readAccessorio(1)).thenReturn(fakeAccessorio);
 
             assertDoesNotThrow(() -> {
-                Prenotazione prenotazione = gsp.selezioneAccessori(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
+                Prenotazione prenotazione = gsp.prenotazioneScooter(listaAccessori, dataRitiro, dataConsegna, email, password, targa);
                 assertNotNull(prenotazione);
             });
         }

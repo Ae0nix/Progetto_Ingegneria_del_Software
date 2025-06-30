@@ -174,7 +174,7 @@ public class GestioneSistemaPrenotazione {
      * @see #autenticazioneUtente(String, String)
      * @see #calcoloCostoPrenotazione(Prenotazione)
      */
-    public Prenotazione selezioneAccessori(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String password, String targa) throws OperationException {
+    public Prenotazione prenotazioneScooter(List<Integer> accId, String dataRitiro, String dataConsegna, String email, String password, String targa) throws OperationException {
         isTargaValida(targa);
         validaIntervalloDate(dataRitiro, dataConsegna);
         try {
