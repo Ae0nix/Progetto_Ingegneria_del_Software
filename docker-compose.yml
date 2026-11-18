@@ -1,0 +1,47 @@
+services:
+  mysql-db:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    container_name: ciuismeglchuan-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets:
+      - db_password
+      - db_root_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u$$MYSQL_USER -p$$(cat /run/secrets/db_password)"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: ./ciuIsMeglCheUan
+    container_name: ciuismeglchuan
+    restart: unless-stopped
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db:3306/${MYSQL_DATABASE}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+    secrets:
+      - source: db_password
+        target: spring.datasource.password
+
+secrets:
+  db_password:
+    file: ./secrets/db_pwd.txt
+  db_root_password:
+    file: ./secrets/db_root_pwd.txt
+
+volumes:
+  mysql_data:

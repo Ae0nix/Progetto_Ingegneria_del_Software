@@ -7,7 +7,7 @@ CREATE TABLE Titolari (
 
 CREATE TABLE Agenzie (
     id INT(10) PRIMARY KEY AUTO_INCREMENT,
-    località VARCHAR(20) NOT NULL,
+    localita VARCHAR(20) NOT NULL,
     indirizzo VARCHAR(30) NOT NULL,
     email VARCHAR(30),
     numeroDiTelefono VARCHAR(20),

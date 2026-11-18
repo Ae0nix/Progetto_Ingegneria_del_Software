@@ -64,7 +64,7 @@ public class ScooterDAO {
         try {
             Connection conn=DBManager.getConnection();
 
-            String query="SELECT s.* FROM Scooter s JOIN Agenzie a On s.agenziaId=a.Id LEFT JOIN Prenotazioni p ON p.scooterTarga = s.targa AND p.dataRitiro < ? AND p.dataConsegna >= ? WHERE a.località=? AND s.stato = 'in-servizio' AND p.id IS NULL";
+            String query="SELECT s.* FROM Scooter s JOIN Agenzie a On s.agenziaId=a.Id LEFT JOIN Prenotazioni p ON p.scooterTarga = s.targa AND p.dataRitiro < ? AND p.dataConsegna >= ? WHERE a.localita=? AND s.stato = 'in-servizio' AND p.id IS NULL";
 
             try {
                 PreparedStatement ps= conn.prepareStatement(query);
@@ -93,6 +93,7 @@ public class ScooterDAO {
 
                 }
             } catch (SQLException e) {
+                e.printStackTrace();
                 throw new DAOException("Errore lettura Scooter");
             } finally {
                 DBManager.closeConnection();

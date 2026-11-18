@@ -1,5 +1,3 @@
--- Inserimento dati di test aggiornati per il database di noleggio scooter
-
 -- Inserimento Titolari
 INSERT INTO Titolari (username, password) VALUES
 ('mario_rossi', 'password123'),
@@ -9,7 +7,7 @@ INSERT INTO Titolari (username, password) VALUES
 ('carla_gialli', 'rental123');
 
 -- Inserimento Agenzie
-INSERT INTO Agenzie (località, indirizzo, email, numeroDiTelefono, usernameTitolare) VALUES
+INSERT INTO Agenzie (localita, indirizzo, email, numeroDiTelefono, usernameTitolare) VALUES
 ('Roma', 'Via del Corso 45', 'roma@scooter.it', '06-12345678', 'mario_rossi'),
 ('Milano', 'Corso Buenos Aires 12', 'milano@scooter.it', '02-87654321', 'luigi_bianchi'),
 ('Napoli', 'Via Toledo 88', 'napoli@scooter.it', '081-11223344', 'anna_verdi'),
@@ -77,7 +75,6 @@ INSERT INTO Scooter (targa, cilindrata, prezzoPerGiornoNoleggioAltaStagione, pre
 ('AB901CD', 300, 50.00, 20.00, 'manutenzione', 'tradizionale', 7);
 
 -- Inserimento Accessori (divisi tra Optional e Servizi Assicurativi)
-
 INSERT INTO Accessori (descrizione, prezzo, tipo) VALUES
 -- Optional
 ('Casco integrale', 5.00, 'optional'),
@@ -90,33 +87,38 @@ INSERT INTO Accessori (descrizione, prezzo, tipo) VALUES
 ('Assicurazione infortuni', 12.00, 'servizio_assicurativo'),
 ('Copertura danni accidentali', 20.00, 'servizio_assicurativo');
 
--- Inserimento Prenotazioni (mix di periodi alta/bassa stagione)
+-- Inserimento Prenotazioni (include prenotazioni attive e future da Novembre 2026 a Gennaio 2027)
 INSERT INTO Prenotazioni (dataRitiro, dataConsegna, costoTotale, clienteRegistratoId, scooterTarga) VALUES
--- Bassa stagione (prezzo 20€/giorno)
-('2025-03-10', '2025-03-12', 57.00, 1, 'AB123CD'), -- 2 giorni + accessori
-('2025-04-15', '2025-04-20', 127.00, 2, 'IJ789KL'), -- 5 giorni + accessori
-('2025-05-08', '2025-05-10', 58.00, 3, 'GH567IJ'), -- 2 giorni + accessori
-('2025-02-12', '2025-02-15', 78.00, 4, 'IJ678KL'), -- 3 giorni + accessori
--- Alta stagione (prezzo 50€/giorno)  
+-- Periodo attuale: Novembre 2026 (bassa stagione 20€/giorno)
+('2026-11-17', '2026-11-19', 57.00, 1, 'AB123CD'), -- 2 giorni (attiva oggi) + accessori
+('2025-04-15', '2025-04-20', 127.00, 2, 'IJ789KL'), -- 5 giorni storici + accessori
+('2025-05-08', '2025-05-10', 58.00, 3, 'GH567IJ'), -- 2 giorni storici + accessori
+('2025-02-12', '2025-02-15', 78.00, 4, 'IJ678KL'), -- 3 giorni storici + accessori
+-- Alta stagione storica (prezzo 50€/giorno)
 ('2025-07-10', '2025-07-15', 285.00, 5, 'EF456GH'), -- 5 giorni + accessori
 ('2025-08-16', '2025-08-18', 132.00, 6, 'CD234EF'), -- 2 giorni + accessori
 ('2025-06-20', '2025-06-25', 295.00, 7, 'KL890MN'), -- 5 giorni + accessori
 ('2025-07-22', '2025-07-24', 142.00, 8, 'OP123QR'), -- 2 giorni + accessori
--- Mix stagioni
+-- Mix stagioni storico
 ('2025-05-28', '2025-06-03', 210.00, 9, 'EF345GH'), -- 6 giorni (3 bassa + 3 alta) + accessori
 ('2025-08-25', '2025-09-02', 310.00, 10, 'UV567WX'), -- 8 giorni (4 alta + 4 bassa) + accessori
 ('2025-07-05', '2025-07-12', 395.00, 11, 'CD123EF'), -- 7 giorni alta + accessori
-('2025-04-28', '2025-05-05', 167.00, 12, 'QR234ST'), -- 7 giorni bassa + accessori
+-- Periodo Novembre 2026 - Gennaio 2027 (bassa stagione 20€/giorno)
+('2026-11-18', '2026-11-25', 167.00, 12, 'QR234ST'), -- 7 giorni (inizia oggi) + accessori
 ('2025-06-12', '2025-06-19', 385.00, 13, 'GH456IJ'), -- 7 giorni alta + accessori
-('2025-03-20', '2025-03-27', 152.00, 14, 'YZ890AB'), -- 7 giorni bassa + accessori
+('2026-12-05', '2026-12-12', 152.00, 14, 'YZ890AB'), -- 7 giorni dicembre + accessori
 ('2025-08-10', '2025-08-17', 398.00, 15, 'ST345UV'), -- 7 giorni alta + accessori
-('2025-05-15', '2025-05-22', 168.00, 16, 'WX678YZ'), -- 7 giorni bassa + accessori
+('2026-12-22', '2026-12-29', 168.00, 16, 'WX678YZ'), -- 7 giorni Natale + accessori
 ('2025-07-28', '2025-08-01', 248.00, 17, 'OP012QR'), -- 4 giorni alta + accessori
-('2025-04-10', '2025-04-14', 98.00, 18, 'KL789MN'); -- 4 giorni bassa + accessori
+('2027-01-04', '2027-01-08', 98.00, 18, 'KL789MN'),  -- 4 giorni gennaio + accessori
+-- Nuove prenotazioni aggiuntive tra Novembre 2026 e Gennaio 2027
+('2026-11-24', '2026-11-29', 115.00, 2, 'MN012OP'),  -- 5 giorni fine novembre (Roma) + accessori
+('2026-12-28', '2027-01-03', 137.00, 5, 'UV678WX'),  -- 6 giorni Capodanno (Milano) + accessori
+('2027-01-12', '2027-01-19', 157.00, 8, 'OP123QR');  -- 7 giorni metà gennaio (Napoli) + accessori
 
 -- Inserimento Prenotazioni_Accessori (mix di optional e servizi assicurativi)
 INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
--- Prenotazione 1 (Luca Ferrari - 2 giorni bassa stagione)
+-- Prenotazione 1 (Luca Ferrari - 2 giorni novembre 2026)
 (1, 1), -- Casco integrale
 (1, 2), -- Bauletto posteriore
 (1, 5), -- Secondo guidatore
@@ -179,7 +181,7 @@ INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
 (11, 5), -- Secondo guidatore
 (11, 7), -- Copertura danni accidentali
 
--- Prenotazione 12 (Valentina Costa - 7 giorni bassa)
+-- Prenotazione 12 (Valentina Costa - 7 giorni novembre 2026)
 (12, 1), -- Casco integrale
 (12, 3), -- Navigatore GPS
 (12, 6), -- Assicurazione infortuni
@@ -190,7 +192,7 @@ INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
 (13, 6), -- Assicurazione infortuni
 (13, 7), -- Copertura danni accidentali
 
--- Prenotazione 14 (Laura Pellegrini - 7 giorni bassa)
+-- Prenotazione 14 (Laura Pellegrini - 7 giorni dicembre 2026)
 (14, 1), -- Casco integrale
 (14, 4), -- Parabrezza antivento
 (14, 5), -- Secondo guidatore
@@ -202,7 +204,7 @@ INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
 (15, 3), -- Navigatore GPS
 (15, 7), -- Copertura danni accidentali
 
--- Prenotazione 16 (Federica Rizzo - 7 giorni bassa)
+-- Prenotazione 16 (Federica Rizzo - 7 giorni Natale 2026)
 (16, 1), -- Casco integrale
 (16, 4), -- Parabrezza antivento
 (16, 6), -- Assicurazione infortuni
@@ -213,7 +215,19 @@ INSERT INTO Prenotazioni_Accessori (prenotazioneId, accessorioId) VALUES
 (17, 5), -- Secondo guidatore
 (17, 7), -- Copertura danni accidentali
 
--- Prenotazione 18 (Martina De Luca - 4 giorni bassa)
+-- Prenotazione 18 (Martina De Luca - 4 giorni gennaio 2027)
 (18, 1), -- Casco integrale
 (18, 2), -- Bauletto posteriore
-(18, 6); -- Assicurazione infortuni
+(18, 6), -- Assicurazione infortuni
+
+-- Prenotazione 19 (Giulia Romano - 5 giorni fine novembre 2026)
+(19, 1), -- Casco integrale
+(19, 5), -- Secondo guidatore
+
+-- Prenotazione 20 (Alessandro Marino - 6 giorni Capodanno 2026/2027)
+(20, 1), -- Casco integrale
+(20, 6), -- Assicurazione infortuni
+
+-- Prenotazione 21 (Chiara Lombardi - 7 giorni gennaio 2027)
+(21, 1), -- Casco integrale
+(21, 6); -- Assicurazione infortuni
